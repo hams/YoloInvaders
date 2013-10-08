@@ -15,12 +15,6 @@
                     <view key="view" contentMode="scaleToFill" id="bdc-N1-crn" customClass="SKView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" fixedFrame="YES" image="lives" translatesAutoresizingMaskIntoConstraints="NO" id="J1c-RY-Gqu">
-                                <rect key="frame" x="256" y="16" width="51" height="10"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                            </imageView>
-                        </subviews>
                         <color key="backgroundColor" red="0.078431375324726105" green="0.098039224743843079" blue="0.1098039299249649" alpha="1" colorSpace="deviceRGB"/>
                     </view>
                     <navigationItem key="navigationItem" id="vT3-6U-Sdy"/>
@@ -70,9 +64,6 @@
             <point key="canvasLocation" x="-63" y="-180"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="lives" width="51" height="10"/>
-    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <nil key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

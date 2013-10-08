@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A77581101803574100E34415 /* lazer.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A775810F1803574100E34415 /* lazer.mp3 */; };
+		A77581131803925F00E34415 /* lazer.wav in Resources */ = {isa = PBXBuildFile; fileRef = A77581121803925F00E34415 /* lazer.wav */; };
+		A775811518039EC200E34415 /* EXPLOSION.atlas in Resources */ = {isa = PBXBuildFile; fileRef = A775811418039EC200E34415 /* EXPLOSION.atlas */; };
+		A77581181803ACE400E34415 /* explosion.sks in Resources */ = {isa = PBXBuildFile; fileRef = A77581161803ACE400E34415 /* explosion.sks */; };
 		A7CB077717FB0BDF00F1B584 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7CB077617FB0BDF00F1B584 /* Foundation.framework */; };
 		A7CB077917FB0BDF00F1B584 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7CB077817FB0BDF00F1B584 /* CoreGraphics.framework */; };
 		A7CB077B17FB0BDF00F1B584 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7CB077A17FB0BDF00F1B584 /* UIKit.framework */; };
@@ -37,6 +41,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A775810F1803574100E34415 /* lazer.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = lazer.mp3; sourceTree = "<group>"; };
+		A77581121803925F00E34415 /* lazer.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = lazer.wav; sourceTree = "<group>"; };
+		A775811418039EC200E34415 /* EXPLOSION.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = EXPLOSION.atlas; sourceTree = "<group>"; };
+		A77581161803ACE400E34415 /* explosion.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = explosion.sks; path = ../explosion.sks; sourceTree = "<group>"; };
 		A7CB077317FB0BDF00F1B584 /* SpaceGamer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpaceGamer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7CB077617FB0BDF00F1B584 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		A7CB077817FB0BDF00F1B584 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -122,6 +130,9 @@
 		A7CB077E17FB0BDF00F1B584 /* SpaceGamer */ = {
 			isa = PBXGroup;
 			children = (
+				A77581161803ACE400E34415 /* explosion.sks */,
+				A775810F1803574100E34415 /* lazer.mp3 */,
+				A77581121803925F00E34415 /* lazer.wav */,
 				A7CB078717FB0BDF00F1B584 /* AppDelegate.h */,
 				A7CB078817FB0BDF00F1B584 /* AppDelegate.m */,
 				A7CB078A17FB0BDF00F1B584 /* Main.storyboard */,
@@ -131,6 +142,7 @@
 				A7CB078E17FB0BDF00F1B584 /* ViewController.m */,
 				A7CB079017FB0BDF00F1B584 /* MyScene.h */,
 				A7CB079117FB0BDF00F1B584 /* MyScene.m */,
+				A775811418039EC200E34415 /* EXPLOSION.atlas */,
 				A7CB079517FB0BDF00F1B584 /* Images.xcassets */,
 				A7CB077F17FB0BDF00F1B584 /* Supporting Files */,
 			);
@@ -245,7 +257,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A77581131803925F00E34415 /* lazer.wav in Resources */,
 				A7CB078317FB0BDF00F1B584 /* InfoPlist.strings in Resources */,
+				A77581101803574100E34415 /* lazer.mp3 in Resources */,
+				A775811518039EC200E34415 /* EXPLOSION.atlas in Resources */,
+				A77581181803ACE400E34415 /* explosion.sks in Resources */,
 				A7CB079617FB0BDF00F1B584 /* Images.xcassets in Resources */,
 				A7CB078C17FB0BDF00F1B584 /* Main.storyboard in Resources */,
 			);

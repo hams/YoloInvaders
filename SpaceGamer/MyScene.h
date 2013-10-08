@@ -12,6 +12,7 @@
 
 @property (nonatomic) NSUInteger scoreValue;
 @property (nonatomic) NSUInteger livesValue;
+@property SKEmitterNode *explosion;
 -(void)scoreUpdate;
 -(void)livesUpdate;
 

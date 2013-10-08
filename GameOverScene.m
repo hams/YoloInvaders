@@ -20,15 +20,15 @@
         // Game Over / Win Text
         NSString * message;
         if (won) {
-            message = @"You Won";
+            message = @"MISSION COMPLETE";
         } else {
             message = @"GAME OVER";
         }
         
         // Game Over / Win Settings
-        SKLabelNode *gameOver = [SKLabelNode labelNodeWithFontNamed:@"Helvetica Neue UltraLight"];
+        SKLabelNode *gameOver = [SKLabelNode labelNodeWithFontNamed:@"Helvetica Neue Light"];
         gameOver.text = message;
-        gameOver.fontSize = 36;
+        gameOver.fontSize = 24;
         gameOver.fontColor = [SKColor whiteColor];
         gameOver.position = CGPointMake(self.size.width/2, self.size.height/2);
         [self addChild:gameOver];
