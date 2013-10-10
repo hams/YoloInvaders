@@ -266,7 +266,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
     [projectile runAction:[SKAction sequence:@[actionMove, actionMoveDone]]];
     [_lazer runAction:[SKAction sequence:@[actionMove, actionMoveDone]]];
     
-    SKAction* soundAction = [SKAction playSoundFileNamed:@"lazer.wav" waitForCompletion:NO];
+ //   SKAction* soundAction = [SKAction playSoundFileNamed:@"lazer.wav" waitForCompletion:NO];
 //    [self runAction:soundAction];
     
 }
