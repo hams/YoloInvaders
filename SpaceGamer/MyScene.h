@@ -13,6 +13,10 @@
 @property (nonatomic) NSUInteger scoreValue;
 @property (nonatomic) NSUInteger livesValue;
 @property SKEmitterNode *explosion;
+@property SKEmitterNode *lazer;
+@property SKEmitterNode *stars;
+@property SKEmitterNode *stars2;
+@property SKEmitterNode *fuel;
 -(void)scoreUpdate;
 -(void)livesUpdate;
 

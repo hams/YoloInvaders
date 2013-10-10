@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A723D1761806302D0042E4A3 /* stars.sks in Resources */ = {isa = PBXBuildFile; fileRef = A723D1741806302D0042E4A3 /* stars.sks */; };
+		A723D1771806302D0042E4A3 /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = A723D1751806302D0042E4A3 /* spark.png */; };
+		A723D179180635F50042E4A3 /* stars2.sks in Resources */ = {isa = PBXBuildFile; fileRef = A723D178180635F50042E4A3 /* stars2.sks */; };
+		A723D180180638410042E4A3 /* fuel.sks in Resources */ = {isa = PBXBuildFile; fileRef = A723D17F180638410042E4A3 /* fuel.sks */; };
+		A74B84841804441F00217036 /* explosion2.sks in Resources */ = {isa = PBXBuildFile; fileRef = A74B84821804441F00217036 /* explosion2.sks */; };
+		A74B84871804448400217036 /* lazer.png in Resources */ = {isa = PBXBuildFile; fileRef = A74B84861804448400217036 /* lazer.png */; };
+		A74B848F1804470800217036 /* lazer.sks in Resources */ = {isa = PBXBuildFile; fileRef = A74B848E1804470800217036 /* lazer.sks */; };
 		A77581101803574100E34415 /* lazer.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A775810F1803574100E34415 /* lazer.mp3 */; };
 		A77581131803925F00E34415 /* lazer.wav in Resources */ = {isa = PBXBuildFile; fileRef = A77581121803925F00E34415 /* lazer.wav */; };
 		A775811518039EC200E34415 /* EXPLOSION.atlas in Resources */ = {isa = PBXBuildFile; fileRef = A775811418039EC200E34415 /* EXPLOSION.atlas */; };
@@ -41,6 +48,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A723D1741806302D0042E4A3 /* stars.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = stars.sks; sourceTree = "<group>"; };
+		A723D1751806302D0042E4A3 /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
+		A723D178180635F50042E4A3 /* stars2.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = stars2.sks; sourceTree = "<group>"; };
+		A723D17F180638410042E4A3 /* fuel.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = fuel.sks; sourceTree = "<group>"; };
+		A74B84821804441F00217036 /* explosion2.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = explosion2.sks; sourceTree = "<group>"; };
+		A74B84861804448400217036 /* lazer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lazer.png; path = Images.xcassets/lazer.imageset/lazer.png; sourceTree = "<group>"; };
+		A74B848E1804470800217036 /* lazer.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = lazer.sks; path = ../lazer.sks; sourceTree = "<group>"; };
 		A775810F1803574100E34415 /* lazer.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = lazer.mp3; sourceTree = "<group>"; };
 		A77581121803925F00E34415 /* lazer.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = lazer.wav; sourceTree = "<group>"; };
 		A775811418039EC200E34415 /* EXPLOSION.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = EXPLOSION.atlas; sourceTree = "<group>"; };
@@ -96,6 +110,56 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A723D17A180637AC0042E4A3 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				A723D17E180637F50042E4A3 /* Atlas */,
+				A723D17D180637DA0042E4A3 /* Sounds */,
+				A723D17C180637CD0042E4A3 /* Images */,
+				A723D17B180637B60042E4A3 /* Emitters */,
+			);
+			name = Assets;
+			sourceTree = "<group>";
+		};
+		A723D17B180637B60042E4A3 /* Emitters */ = {
+			isa = PBXGroup;
+			children = (
+				A723D17F180638410042E4A3 /* fuel.sks */,
+				A74B848E1804470800217036 /* lazer.sks */,
+				A77581161803ACE400E34415 /* explosion.sks */,
+				A723D1741806302D0042E4A3 /* stars.sks */,
+				A723D178180635F50042E4A3 /* stars2.sks */,
+				A74B84821804441F00217036 /* explosion2.sks */,
+			);
+			name = Emitters;
+			sourceTree = "<group>";
+		};
+		A723D17C180637CD0042E4A3 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				A74B84861804448400217036 /* lazer.png */,
+				A723D1751806302D0042E4A3 /* spark.png */,
+			);
+			name = Images;
+			sourceTree = "<group>";
+		};
+		A723D17D180637DA0042E4A3 /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				A775810F1803574100E34415 /* lazer.mp3 */,
+				A77581121803925F00E34415 /* lazer.wav */,
+			);
+			name = Sounds;
+			sourceTree = "<group>";
+		};
+		A723D17E180637F50042E4A3 /* Atlas */ = {
+			isa = PBXGroup;
+			children = (
+				A775811418039EC200E34415 /* EXPLOSION.atlas */,
+			);
+			name = Atlas;
+			sourceTree = "<group>";
+		};
 		A7CB076A17FB0BDF00F1B584 = {
 			isa = PBXGroup;
 			children = (
@@ -130,19 +194,16 @@
 		A7CB077E17FB0BDF00F1B584 /* SpaceGamer */ = {
 			isa = PBXGroup;
 			children = (
-				A77581161803ACE400E34415 /* explosion.sks */,
-				A775810F1803574100E34415 /* lazer.mp3 */,
-				A77581121803925F00E34415 /* lazer.wav */,
+				A723D17A180637AC0042E4A3 /* Assets */,
 				A7CB078717FB0BDF00F1B584 /* AppDelegate.h */,
-				A7CB078817FB0BDF00F1B584 /* AppDelegate.m */,
 				A7CB078A17FB0BDF00F1B584 /* Main.storyboard */,
+				A7CB078817FB0BDF00F1B584 /* AppDelegate.m */,
 				A7F4D23417FE2D95000564F8 /* GameOverScene.h */,
 				A7F4D23517FE2D95000564F8 /* GameOverScene.m */,
 				A7CB078D17FB0BDF00F1B584 /* ViewController.h */,
 				A7CB078E17FB0BDF00F1B584 /* ViewController.m */,
 				A7CB079017FB0BDF00F1B584 /* MyScene.h */,
 				A7CB079117FB0BDF00F1B584 /* MyScene.m */,
-				A775811418039EC200E34415 /* EXPLOSION.atlas */,
 				A7CB079517FB0BDF00F1B584 /* Images.xcassets */,
 				A7CB077F17FB0BDF00F1B584 /* Supporting Files */,
 			);
@@ -257,13 +318,20 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A74B84841804441F00217036 /* explosion2.sks in Resources */,
+				A723D1771806302D0042E4A3 /* spark.png in Resources */,
+				A74B848F1804470800217036 /* lazer.sks in Resources */,
 				A77581131803925F00E34415 /* lazer.wav in Resources */,
 				A7CB078317FB0BDF00F1B584 /* InfoPlist.strings in Resources */,
+				A723D180180638410042E4A3 /* fuel.sks in Resources */,
+				A74B84871804448400217036 /* lazer.png in Resources */,
 				A77581101803574100E34415 /* lazer.mp3 in Resources */,
 				A775811518039EC200E34415 /* EXPLOSION.atlas in Resources */,
 				A77581181803ACE400E34415 /* explosion.sks in Resources */,
 				A7CB079617FB0BDF00F1B584 /* Images.xcassets in Resources */,
 				A7CB078C17FB0BDF00F1B584 /* Main.storyboard in Resources */,
+				A723D1761806302D0042E4A3 /* stars.sks in Resources */,
+				A723D179180635F50042E4A3 /* stars2.sks in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

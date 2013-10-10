@@ -9,13 +9,13 @@
 #import "MyScene.h"
 #import "GameOverScene.h"
 
-// 1
 @interface MyScene () <SKPhysicsContactDelegate>
 @property (nonatomic) SKSpriteNode * player;
 @property (nonatomic) SKSpriteNode * monster;
 @property (nonatomic) SKLabelNode * levelText;
-@property (nonatomic) SKLabelNode *scoreContainer;
-@property (nonatomic) SKLabelNode *livesContainer;
+@property (nonatomic) SKLabelNode * scoreContainer;
+@property (nonatomic) SKLabelNode * livesContainer;
+@property (nonatomic) SKLabelNode * pointsText;
 @property (nonatomic) NSMutableArray * explosionTextures;
 @property (nonatomic) NSTimeInterval lastSpawnTimeInterval;
 @property (nonatomic) NSTimeInterval lastLazerTimeInterval;
@@ -51,17 +51,32 @@ static inline CGPoint rwNormalize(CGPoint a) {
 }
 
 -(void)scoreUpdate{
+    
+    // Adds points for hitting
     self.scoreValue += 75;
     
+    // Updates Score
     _scoreContainer.text = [NSString stringWithFormat:@"%lu",(unsigned long)_scoreValue];
 }
 
 -(void)livesUpdate{
     if (_livesValue > 0) {
+        
+        // Removes Life for getting hit
         self.livesValue -= 1;
+        
+        // Removes Points for getting hit
         self.scoreValue -= 25;
         
+        // Updates Life
         _livesContainer.text = [NSString stringWithFormat:@"%lu",(unsigned long)_livesValue];
+        
+        SKAction *pulseRed = [SKAction sequence:@[
+                                                  [SKAction colorizeWithColor:[SKColor redColor] colorBlendFactor:1.0 duration:0.15],
+                                                  [SKAction waitForDuration:0.1],
+                                                  [SKAction colorizeWithColorBlendFactor:0.0 duration:0.15]]];
+        [self.player runAction: pulseRed];
+
     }
 }
 
@@ -104,20 +119,54 @@ static inline CGPoint rwNormalize(CGPoint a) {
     return self;
 }
 
+-(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
+    
+    UITouch * touch = [touches anyObject];
+    CGPoint location = [touch locationInNode:self];
+    
+    self.player.position = location;
+    self.fuel.position = CGPointMake(location.x, location.y - 24);
+    
+}
+
 - (void)addPlayer {
     
-    self.player = [SKSpriteNode spriteNodeWithImageNamed:@"spaceship"];
+    self.player = [SKSpriteNode spriteNodeWithImageNamed:@"plane3"];
     self.player.position = CGPointMake(CGRectGetMidX(self.frame), 120);
+    self.player.zPosition = 10;
+    self.player.Scale = 0.1;
     [self addChild:self.player];
+    
+    // Adds Fuel Effect
+    NSString *fuelPath = [[NSBundle mainBundle] pathForResource:@"fuel" ofType:@"sks"];
+    _fuel = [NSKeyedUnarchiver unarchiveObjectWithFile:fuelPath];
+    _fuel.position = CGPointMake(self.player.position.x, self.player.position.y - 24);
+    _fuel.zPosition = 7;
+    _fuel.Scale = 0.2;
+    [self addChild:_fuel];
 }
 
 - (void)addBackground {
     
-    self.backgroundColor = [SKColor colorWithRed:0.09 green:0.12 blue:0.20 alpha:1.0];
+    self.backgroundColor = [SKColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0];
     
     SKSpriteNode *background = [SKSpriteNode spriteNodeWithImageNamed:@"spacebg"];
-    background.position = CGPointMake(CGRectGetMidX(self.frame),CGRectGetMidY(self.frame));
+    background.position = CGPointMake(CGRectGetMidX(self.frame), 400);
     [self addChild:background];
+    
+    SKAction *moveBackground = [SKAction moveToY:-1800 duration:50];
+    [background runAction:[SKAction repeatAction:[SKAction sequence:[NSArray arrayWithObjects:moveBackground, nil]] count:1]];
+    
+    NSString *starsEmitter = [[NSBundle mainBundle] pathForResource:@"stars" ofType:@"sks"];
+    _stars = [NSKeyedUnarchiver unarchiveObjectWithFile:starsEmitter];
+    _stars.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMaxY(self.frame));
+    [self addChild:_stars];
+    
+    NSString *starsEmitter2 = [[NSBundle mainBundle] pathForResource:@"stars2" ofType:@"sks"];
+    _stars2 = [NSKeyedUnarchiver unarchiveObjectWithFile:starsEmitter2];
+    _stars2.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMaxY(self.frame));
+    [self addChild:_stars2];
+    
 }
 
 - (void)userInterface {
@@ -128,6 +177,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
     scoreText.fontSize = 12;
     scoreText.fontColor = [SKColor colorWithRed:0.40 green:0.44 blue:0.45 alpha:1.0];
     scoreText.position = CGPointMake(36, CGRectGetHeight(self.frame) - 24);
+    scoreText.zPosition = 100;
     [self addChild:scoreText];
     
     // Adds Score Value
@@ -138,6 +188,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
     _scoreContainer.fontSize = 12;
     _scoreContainer.fontColor = [SKColor colorWithRed:1 green:1 blue:1 alpha:1.0];
     _scoreContainer.position = CGPointMake(70, CGRectGetHeight(self.frame) - 24);
+    _scoreContainer.zPosition = 100;
     [self addChild:_scoreContainer];
     
     // Adds Lives Value
@@ -148,29 +199,26 @@ static inline CGPoint rwNormalize(CGPoint a) {
     _livesContainer.fontSize = 12;
     _livesContainer.fontColor = [SKColor colorWithRed:1 green:1 blue:1 alpha:1.0];
     _livesContainer.position = CGPointMake(CGRectGetWidth(self.frame) - 30, CGRectGetHeight(self.frame) - 24);
+    _livesContainer.zPosition = 100;
     [self addChild:_livesContainer];
     
     // Adds Level Text
     _levelText = [SKLabelNode labelNodeWithFontNamed:@"Helvetica Neue Light"];
     _levelText.text = @"LEVEL 1";
-    _levelText.fontSize = 24;
+    _levelText.fontSize = 18;
     _levelText.fontColor = [SKColor colorWithRed:1 green:1 blue:1 alpha:1.0];
     _levelText.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMaxX(self.frame));
+    _levelText.zPosition = 100;
     [self addChild:_levelText];
     
 }
 
 -(void)fadeOutLabels
 {
-    [UIView animateWithDuration:1.0
-                          delay:0.0  /* do not add a delay because we will use performSelector. */
-                        options:UIViewAnimationOptionCurveEaseInOut
-                     animations:^ {
-                         _levelText.alpha = 0.0;
-                     }
-                     completion:^(BOOL finished) {
-                         [_levelText removeFromParent];
-                     }];
+    SKAction *fadeoutAction = [SKAction fadeOutWithDuration:0.5];
+    SKAction *fadeinAction = [SKAction fadeInWithDuration:0.5];
+    SKAction *remove = [SKAction removeFromParent];
+    [_levelText runAction:[SKAction repeatAction:[SKAction sequence:[NSArray arrayWithObjects:fadeinAction, fadeoutAction, remove, nil]] count:1]];
 }
 
 - (void)addLazer {
@@ -185,6 +233,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
     projectile.physicsBody.contactTestBitMask = monsterCategory;
     projectile.physicsBody.collisionBitMask = 0;
     projectile.physicsBody.usesPreciseCollisionDetection = YES;
+    projectile.zPosition = 5;
     
     // Determine offset of location to lazer
     CGPoint offset = rwSub(CGPointMake(self.player.position.x, CGRectGetHeight(self.frame)), projectile.position);
@@ -201,22 +250,31 @@ static inline CGPoint rwNormalize(CGPoint a) {
     // Add the shoot amount to the current position
     CGPoint realDest = rwAdd(shootAmount, projectile.position);
     
+    // Adds Lazer Effect
+    NSString *lazerPath = [[NSBundle mainBundle] pathForResource:@"fuel" ofType:@"sks"];
+    _lazer = [NSKeyedUnarchiver unarchiveObjectWithFile:lazerPath];
+    _lazer.position = projectile.position;
+    _lazer.zPosition = 7;
+    _lazer.scale = 0.2;
+    [self addChild:_lazer];
+    
     // Create the actions
     float velocity = 480.0/1.0;
     float realMoveDuration = self.size.width / velocity;
     SKAction * actionMove = [SKAction moveTo:realDest duration:realMoveDuration];
     SKAction * actionMoveDone = [SKAction removeFromParent];
     [projectile runAction:[SKAction sequence:@[actionMove, actionMoveDone]]];
+    [_lazer runAction:[SKAction sequence:@[actionMove, actionMoveDone]]];
     
     SKAction* soundAction = [SKAction playSoundFileNamed:@"lazer.wav" waitForCompletion:NO];
-    [self runAction:soundAction];
+//    [self runAction:soundAction];
     
 }
 
 - (void)addMonster {
     
     // Create sprite
-    SKSpriteNode * monster = [SKSpriteNode spriteNodeWithImageNamed:@"enemy1"];
+    SKSpriteNode * monster = [SKSpriteNode spriteNodeWithImageNamed:@"enemy2"];
     
     // Determine where to spawn the monster along the Y axis
     int minY = monster.size.width / 2;
@@ -234,6 +292,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
     monster.physicsBody.categoryBitMask = monsterCategory;
     monster.physicsBody.contactTestBitMask = projectileCategory;
     monster.physicsBody.collisionBitMask = 0;
+    monster.zPosition = 7;
     
     self.physicsWorld.gravity = CGVectorMake(0,0);
     self.physicsWorld.contactDelegate = self;
@@ -261,26 +320,33 @@ static inline CGPoint rwNormalize(CGPoint a) {
 
 }
 
--(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
-    
-    UITouch * touch = [touches anyObject];
-    CGPoint location = [touch locationInNode:self];
-    
-    self.player.position = location;
-   
-}
-
 - (void)projectile:(SKSpriteNode *)projectile didCollideWithMonster:(SKSpriteNode *)monster {
     [projectile removeFromParent];
     [monster removeFromParent];
     
     [self scoreUpdate];
     
-    // Adds Explosion
-    NSString *smokePath = [[NSBundle mainBundle] pathForResource:@"explosion" ofType:@"sks"];
+    // Adds Explosion // >> THIS SECTION SHOULD GET MOVED TO OWN PART, BUT monster.position is the problem <<
+    NSString *smokePath = [[NSBundle mainBundle] pathForResource:@"explosion2" ofType:@"sks"];
     _explosion = [NSKeyedUnarchiver unarchiveObjectWithFile:smokePath];
     _explosion.position = monster.position;
-    [self addChild:_explosion];
+    _explosion.zPosition = 7;
+   [self addChild:_explosion];
+    
+    // Adds Points Text // >> THIS SECTION SHOULD GET MOVED TO OWN PART, BUT monster.position is the problem <<
+    _pointsText = [SKLabelNode labelNodeWithFontNamed:@"Helvetica Neue Light"];
+    _pointsText.text = @"+75";
+    _pointsText.fontSize = 16;
+    _pointsText.fontColor = [SKColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0];
+    _pointsText.position = CGPointMake(monster.position.x + 30, monster.position.y + 24);
+    _pointsText.zPosition = 100;
+    [self addChild:_pointsText];
+    
+    // Adds Points Animation // >> THIS SECTION SHOULD GET MOVED TO OWN PART, BUT monster.position is the problem <<
+    SKAction *fadeoutAction = [SKAction fadeOutWithDuration:0.5];
+    SKAction *fadeinAction = [SKAction fadeInWithDuration:0.3];
+    SKAction *remove = [SKAction removeFromParent];
+    [_pointsText runAction:[SKAction repeatAction:[SKAction sequence:[NSArray arrayWithObjects:fadeinAction, fadeoutAction, remove, nil]] count:1]];
     
     self.monstersDestroyed++;
     if (self.monstersDestroyed > 30) {
@@ -300,11 +366,15 @@ static inline CGPoint rwNormalize(CGPoint a) {
     {
         firstBody = contact.bodyA;
         secondBody = contact.bodyB;
+        
+        NSLog(@"hit! 1");
     }
     else
     {
         firstBody = contact.bodyB;
         secondBody = contact.bodyA;
+        
+        NSLog(@"hit! 2");
     }
     
     // When colliding
