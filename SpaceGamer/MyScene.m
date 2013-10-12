@@ -122,8 +122,9 @@ static inline CGPoint rwNormalize(CGPoint a) {
     
     SKAction *movePlayer = [SKAction moveTo:location duration:0.05];
     SKAction *moveFuel = [SKAction moveTo:CGPointMake(location.x, location.y - 24) duration:0.05];
-    [self.fuel runAction:[SKAction repeatActionForever:moveFuel]];
-    [self.player runAction:[SKAction repeatActionForever:movePlayer]];
+
+    [self.fuel runAction:moveFuel];
+    [self.player runAction:movePlayer];
     
 }
 
