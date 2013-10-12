@@ -173,12 +173,34 @@ static inline CGPoint rwNormalize(CGPoint a) {
 - (void)addBackground {
     self.backgroundColor = [SKColor colorWithRed:0.09 green:0.17 blue:0.28 alpha:1.0];
     
-    _background = [SKSpriteNode spriteNodeWithImageNamed:@"bg3"];
-    _background.position = CGPointMake(CGRectGetMidX(self.frame), 500);
-    [self addChild:_background];
+//    _background = [SKSpriteNode spriteNodeWithImageNamed:@"bg3"];
+//    _background.position = CGPointMake(CGRectGetMidX(self.frame), 500);
+//    [self addChild:_background];
+//    
+//    SKAction *moveBackground = [SKAction moveToY:-1800 duration:50];
+//    [_background runAction:[SKAction repeatAction:[SKAction sequence:[NSArray arrayWithObjects:moveBackground, nil]] count:1]];
+
+    CGContextRef context = CGBitmapContextCreate(NULL, 640.0, 2000, 8, 0, CGColorSpaceCreateDeviceRGB(), kCGImageAlphaPremultipliedLast);
     
-    SKAction *moveBackground = [SKAction moveToY:-1800 duration:50];
-    [_background runAction:[SKAction repeatAction:[SKAction sequence:[NSArray arrayWithObjects:moveBackground, nil]] count:1]];
+    CGFloat locations[2] = {0.0, 1.0};
+    CGFloat compoments[8] = {1.0, 1.0, 1.0, 0.1,
+                             0.0, 0.0, 0.0, 0.1};
+    
+    CGGradientRef gradient = CGGradientCreateWithColorComponents(CGColorSpaceCreateDeviceRGB(), compoments, locations, 2);
+    CGContextDrawLinearGradient(context, gradient, CGPointMake(0.0, 0.0), CGPointMake(0.0, 2000.0), 0);
+    CGImageRef image = CGBitmapContextCreateImage(context);
+    
+    SKSpriteNode *bg = [SKSpriteNode spriteNodeWithTexture:[SKTexture textureWithCGImage:image]];
+    
+    
+//    SKShapeNode *bg = [SKShapeNode node];
+//    bg.path = CGPathCreateWithRect(CGRectMake(0.0, 0.0, 50.0, 50.0), &CGAffineTransformIdentity);
+//    bg.fillColor = [SKColor colorWithRed:1 green:0 blue:0 alpha:1];
+    bg.position = CGPointMake(0.0, 1500.0);
+    NSArray *actions = @[[SKAction moveToY:-1500.0 duration:3], [SKAction moveToY:0.0 duration:3]];
+    [bg runAction:[SKAction repeatActionForever:[SKAction sequence:actions]]];
+    
+    [self addChild:bg];
     
     NSString *starsEmitter = [[NSBundle mainBundle] pathForResource:@"stars" ofType:@"sks"];
     _stars = [NSKeyedUnarchiver unarchiveObjectWithFile:starsEmitter];
