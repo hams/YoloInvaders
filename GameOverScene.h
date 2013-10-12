@@ -9,6 +9,8 @@
 #import <SpriteKit/SpriteKit.h>
 
 @interface GameOverScene : SKScene
+@property SKEmitterNode *stars;
+@property SKEmitterNode *stars2;
 
 -(id)initWithSize:(CGSize)size won:(BOOL)won;
 
