@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		936CA6E2180AFB0A006A3820 /* GameOverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 936CA6E1180AFB0A006A3820 /* GameOverViewController.m */; };
 		A7148A0E1808A35E00EAC7B7 /* point.sks in Resources */ = {isa = PBXBuildFile; fileRef = A7148A0D1808A35E00EAC7B7 /* point.sks */; };
 		A7148A101808FF3B00EAC7B7 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7148A0F1808FF3B00EAC7B7 /* GameKit.framework */; };
 		A723D1761806302D0042E4A3 /* stars.sks in Resources */ = {isa = PBXBuildFile; fileRef = A723D1741806302D0042E4A3 /* stars.sks */; };
@@ -50,6 +51,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		936CA6E0180AFB0A006A3820 /* GameOverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameOverViewController.h; sourceTree = "<group>"; };
+		936CA6E1180AFB0A006A3820 /* GameOverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameOverViewController.m; sourceTree = "<group>"; };
 		A7148A0D1808A35E00EAC7B7 /* point.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = point.sks; sourceTree = "<group>"; };
 		A7148A0F1808FF3B00EAC7B7 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		A723D1741806302D0042E4A3 /* stars.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = stars.sks; sourceTree = "<group>"; };
@@ -207,6 +210,8 @@
 				A7CB078817FB0BDF00F1B584 /* AppDelegate.m */,
 				A7F4D23417FE2D95000564F8 /* GameOverScene.h */,
 				A7F4D23517FE2D95000564F8 /* GameOverScene.m */,
+				936CA6E0180AFB0A006A3820 /* GameOverViewController.h */,
+				936CA6E1180AFB0A006A3820 /* GameOverViewController.m */,
 				A7CB078D17FB0BDF00F1B584 /* GameViewController.h */,
 				A7CB078E17FB0BDF00F1B584 /* GameViewController.m */,
 				A7CB079017FB0BDF00F1B584 /* GameScene.h */,
@@ -363,6 +368,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				936CA6E2180AFB0A006A3820 /* GameOverViewController.m in Sources */,
 				A7F4D23617FE2D95000564F8 /* GameOverScene.m in Sources */,
 				A7CB079217FB0BDF00F1B584 /* GameScene.m in Sources */,
 				A7CB078F17FB0BDF00F1B584 /* GameViewController.m in Sources */,

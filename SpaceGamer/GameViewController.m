@@ -9,26 +9,48 @@
 #import "GameViewController.h"
 #import "GameScene.h"
 
-@implementation ViewController
+@interface GameViewController () {
+    SKView *gameView;
+    GameScene *scene;
+}
+
+@end
+
+@implementation GameViewController
 
 - (void)viewDidLoad
 {
     [self setNeedsStatusBarAppearanceUpdate];
     [super viewDidLoad];
-
+    
     // Configure the view.
-    SKView * skView = (SKView *)self.view;
-    skView.showsFPS = YES;
-    skView.showsNodeCount = YES;
+    gameView = (SKView *)self.view;
+    gameView.showsFPS = YES;
+    gameView.showsNodeCount = YES;
     
     // Create and configure the scene.
-    SKScene * scene = [GameScene sceneWithSize:skView.bounds.size];
+    scene = [GameScene sceneWithSize:gameView.bounds.size];
     scene.scaleMode = SKSceneScaleModeAspectFill;
     
+    scene.gameViewController = self;
     
     // Present the scene.
-    [skView presentScene:scene];
+    [gameView presentScene:scene];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
     
+    gameView.paused = NO;
+    [scene reset];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    gameView.paused = YES;
 }
 
 - (BOOL)shouldAutorotate
@@ -49,6 +71,11 @@
 {
     [super didReceiveMemoryWarning];
     // Release any cached data, images, etc that aren't in use.
+}
+
+- (void)presentGameOverScene
+{
+    [self performSegueWithIdentifier:@"gameOverSegue" sender:self];
 }
 
 @end

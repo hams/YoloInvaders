@@ -7,8 +7,11 @@
 //
 
 #import <SpriteKit/SpriteKit.h>
+#import "GameViewController.h"
 
 @interface GameScene : SKScene
+
+@property (nonatomic, weak) GameViewController *gameViewController;
 
 @property (nonatomic) NSUInteger scoreValue;
 @property (nonatomic) NSUInteger livesValue;
@@ -36,6 +39,7 @@
 @property (nonatomic) float lazerSpeed;
 @property (nonatomic) float spawnSpeed;
 @property (nonatomic) bool started;
+- (void)reset;
 -(void)scoreUpdate;
 -(void)livesUpdate;
 

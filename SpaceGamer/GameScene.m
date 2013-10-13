@@ -10,6 +10,7 @@
 #import "GameOverScene.h"
 
 @interface GameScene () <SKPhysicsContactDelegate>
+
 @end
 
 @implementation GameScene;
@@ -86,6 +87,8 @@ static inline CGPoint rwNormalize(CGPoint a) {
         [self.player runAction:[SKAction repeatAction:[SKAction sequence:[NSArray arrayWithObjects:pulseRed, nil]] count:4]];
 
 
+    } else {
+        [self.gameViewController presentGameOverScene];
     }
 }
 
@@ -136,27 +139,29 @@ static inline CGPoint rwNormalize(CGPoint a) {
 
 }
 
-// INIT
--(id)initWithSize:(CGSize)size {
-    if (self = [super initWithSize:size]) {
-        
-        // Adds Background
-        [self addBackground];
-        
-        // Adds Player
-        [self addPlayer];
-        
-        // Adds UI
-        [self userInterface];
-        
-        // World Gravity etc.
-        self.physicsWorld.gravity = CGVectorMake(0,0);
-        self.physicsWorld.contactDelegate = self;
-        
-        _started = false;
-        
-    }
-    return self;
+- (void)reset
+{
+    [self removeAllChildren];
+    self.lastAsteroidTimeInterval = 0.0;
+    self.lastSpawnTimeInterval = 0.0;
+    self.lastLazerTimeInterval = 0.0;
+    self.lastUpdateTimeInterval = 0.0;
+    self.lastBossSpawnTimeInterval = 0.0;
+    
+    // Adds Background
+    [self addBackground];
+    
+    // Adds Player
+    [self addPlayer];
+    
+    // Adds UI
+    [self userInterface];
+    
+    // World Gravity etc.
+    self.physicsWorld.gravity = CGVectorMake(0,0);
+    self.physicsWorld.contactDelegate = self;
+    
+    _started = false;
 }
 
 // For moving the Space Ship

@@ -52,8 +52,8 @@
     // Retry Button
     if ([node.name isEqualToString:@"homeButton"]) {
         SKTransition *reveal = [SKTransition fadeWithDuration:0.5];
-        SKScene * viewController = [[viewController alloc] initWithSize:self.size];
-        [self.view presentScene:viewController transition: reveal];
+//        SKScene * viewController = [[viewController alloc] initWithSize:self.size];
+//        [self.view presentScene:viewController transition: reveal];
     }
 }
 
