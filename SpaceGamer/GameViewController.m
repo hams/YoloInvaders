@@ -1,13 +1,13 @@
 //
-//  ViewController.m
+//  GameViewController.m
 //  SpaceGamer
 //
 //  Created by Kasper on 10/1/13.
 //  Copyright (c) 2013 Kasper. All rights reserved.
 //
 
-#import "ViewController.h"
-#import "MyScene.h"
+#import "GameViewController.h"
+#import "GameScene.h"
 
 @implementation ViewController
 
@@ -22,7 +22,7 @@
     skView.showsNodeCount = YES;
     
     // Create and configure the scene.
-    SKScene * scene = [MyScene sceneWithSize:skView.bounds.size];
+    SKScene * scene = [GameScene sceneWithSize:skView.bounds.size];
     scene.scaleMode = SKSceneScaleModeAspectFill;
     
     

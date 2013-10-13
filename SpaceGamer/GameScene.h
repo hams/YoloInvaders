@@ -8,7 +8,7 @@
 
 #import <SpriteKit/SpriteKit.h>
 
-@interface MyScene : SKScene
+@interface GameScene : SKScene
 
 @property (nonatomic) NSUInteger scoreValue;
 @property (nonatomic) NSUInteger livesValue;
@@ -28,10 +28,14 @@
 @property (nonatomic) SKLabelNode * pointsText;
 @property (nonatomic) NSMutableArray * explosionTextures;
 @property (nonatomic) NSTimeInterval lastSpawnTimeInterval;
+@property (nonatomic) NSTimeInterval lastAsteroidTimeInterval;
 @property (nonatomic) NSTimeInterval lastLazerTimeInterval;
 @property (nonatomic) NSTimeInterval lastUpdateTimeInterval;
+@property (nonatomic) NSTimeInterval lastBossSpawnTimeInterval;
 @property (nonatomic) int monstersDestroyed;
-@property (nonatomic) int lazerSpeed;
+@property (nonatomic) float lazerSpeed;
+@property (nonatomic) float spawnSpeed;
+@property (nonatomic) bool started;
 -(void)scoreUpdate;
 -(void)livesUpdate;
 

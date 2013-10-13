@@ -1,22 +1,24 @@
 //
-//  MyScene.m
+//  GameScene.m
 //  SpaceGamer
 //
 //  Created by Kasper on 10/1/13.
 //  Copyright (c) 2013 Kasper. All rights reserved.
 //
 
-#import "MyScene.h"
+#import "GameScene.h"
 #import "GameOverScene.h"
 
-@interface MyScene () <SKPhysicsContactDelegate>
+@interface GameScene () <SKPhysicsContactDelegate>
 @end
 
-@implementation MyScene;
+@implementation GameScene;
 
 static const uint32_t projectileCategory     =  0x1 << 0;
 static const uint32_t monsterCategory        =  0x1 << 1;
 static const uint32_t playerCategory         =  0x1 << 2;
+static const uint32_t healthDropCategory     =  0x1 << 3;
+static const uint32_t asteroidCategory       =  0x1 << 4;
 
 static inline CGPoint rwAdd(CGPoint a, CGPoint b) {
     return CGPointMake(a.x + b.x, a.y + b.y);
@@ -40,13 +42,28 @@ static inline CGPoint rwNormalize(CGPoint a) {
     return CGPointMake(a.x / length, a.y / length);
 }
 
--(void)scoreUpdate{
+-(void)scoreUpdate:(SKSpriteNode *) monster{
     
     // Adds points for hitting
     self.scoreValue += 75;
     
     // Updates Score
     _scoreContainer.text = [NSString stringWithFormat:@"%lu",(unsigned long)_scoreValue];
+    
+    // Adds Points Text
+    _pointsText = [SKLabelNode labelNodeWithFontNamed:@"Helvetica Neue Light"];
+    _pointsText.text = @"+75";
+    _pointsText.fontSize = 16;
+    _pointsText.fontColor = [SKColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0];
+    _pointsText.position = CGPointMake(monster.position.x + 30, monster.position.y + 24);
+    _pointsText.zPosition = 100;
+    [self addChild:_pointsText];
+    
+    // Adds Points Animation
+    SKAction *fadeoutAction = [SKAction fadeOutWithDuration:0.5];
+    SKAction *fadeinAction = [SKAction fadeInWithDuration:0.3];
+    SKAction *remove = [SKAction removeFromParent];
+    [_pointsText runAction:[SKAction repeatAction:[SKAction sequence:[NSArray arrayWithObjects:fadeinAction, fadeoutAction, remove, nil]] count:1]];
 }
 
 -(void)livesUpdate{
@@ -72,36 +89,62 @@ static inline CGPoint rwNormalize(CGPoint a) {
     }
 }
 
-
+// Time Intervals
 - (void)updateWithTimeSinceLastUpdate:(CFTimeInterval)timeSinceLast {
     
+    // Spawning Asteroids
+    self.lastAsteroidTimeInterval += timeSinceLast;
+    if (self.lastAsteroidTimeInterval > 1.2) {
+        self.lastAsteroidTimeInterval = 0;
+        [self addAsteroid];
+    }
+    
+    // Spawning Enemies
     self.lastSpawnTimeInterval += timeSinceLast;
-    if (self.lastSpawnTimeInterval > 1) {
+    if (_scoreValue == 0) {
+        _spawnSpeed = 1;
+    }
+    else {
+        _spawnSpeed = 1;  // / _scoreValue;
+    }
+    if (self.lastBossSpawnTimeInterval > 10 && self.lastSpawnTimeInterval > _spawnSpeed) {
         self.lastSpawnTimeInterval = 0;
         [self addMonster];
     }
     
+    // Spawning Boss
+    self.lastBossSpawnTimeInterval += timeSinceLast;
+    if (self.lastBossSpawnTimeInterval > 60) {
+        self.lastBossSpawnTimeInterval = 0;
+        
+        // Adds Boss
+        [self addBoss];
+    }
+    
+    // Lazer Speed
     self.lastLazerTimeInterval += timeSinceLast;
-    _lazerSpeed = 1;
-    if (self.lastLazerTimeInterval > 0.3) {
+    if (_scoreValue == 0) {
+        _lazerSpeed = 0.3;
+    }
+    else {
+        _lazerSpeed = 0.3; // / _scoreValue;
+    }
+    if (self.lastLazerTimeInterval > _lazerSpeed) {
         self.lastLazerTimeInterval = 0;
         [self addLazer];
     }
-    
+
 }
 
+// INIT
 -(id)initWithSize:(CGSize)size {
     if (self = [super initWithSize:size]) {
-        
-        [self performSelector:@selector(fadeOutLabels) withObject:nil afterDelay:3.0f];
         
         // Adds Background
         [self addBackground];
         
         // Adds Player
         [self addPlayer];
-        
-        [self addBoss];
         
         // Adds UI
         [self userInterface];
@@ -110,14 +153,22 @@ static inline CGPoint rwNormalize(CGPoint a) {
         self.physicsWorld.gravity = CGVectorMake(0,0);
         self.physicsWorld.contactDelegate = self;
         
+        _started = false;
+        
     }
     return self;
 }
 
+// For moving the Space Ship
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
     
     UITouch * touch = [touches anyObject];
     CGPoint location = [touch locationInNode:self];
+    
+    if (_started == false) {
+        _started = true;
+        [self performSelector:@selector(fadeOutLabels) withObject:nil afterDelay:0.0f];
+    }
     
     
     SKAction *movePlayer = [SKAction moveTo:location duration:0.05];
@@ -130,16 +181,17 @@ static inline CGPoint rwNormalize(CGPoint a) {
 
 - (void)addPlayer {
     
-    self.player = [SKSpriteNode spriteNodeWithImageNamed:@"plane3"];
+    self.player = [SKSpriteNode spriteNodeWithImageNamed:@"spaceship5"];
     self.player.position = CGPointMake(CGRectGetMidX(self.frame), 120);
     self.player.zPosition = 10;
-    self.player.Scale = 0.1;
+    self.player.Scale = 0.5;
     [self addChild:self.player];
     
     self.player.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:self.player.size];
     self.player.physicsBody.dynamic = YES;
     self.player.physicsBody.categoryBitMask = playerCategory;
     self.player.physicsBody.contactTestBitMask = monsterCategory;
+    self.player.physicsBody.contactTestBitMask = healthDropCategory;
     self.player.physicsBody.collisionBitMask = 0;
     self.player.physicsBody.usesPreciseCollisionDetection = YES;
     
@@ -181,13 +233,13 @@ static inline CGPoint rwNormalize(CGPoint a) {
 //    [_background runAction:[SKAction repeatAction:[SKAction sequence:[NSArray arrayWithObjects:moveBackground, nil]] count:1]];
 
     CGContextRef context = CGBitmapContextCreate(NULL, 640.0, 2000, 8, 0, CGColorSpaceCreateDeviceRGB(), kCGImageAlphaPremultipliedLast);
-    
+
     CGFloat locations[2] = {0.0, 1.0};
-    CGFloat compoments[8] = {1.0, 1.0, 1.0, 0.1,
-                             0.0, 0.0, 0.0, 0.1};
+    CGFloat compoments[8] = {0.26, 0.15, 0.47, 1.0,
+                             0.10, 0.16, 0.25, 1.0};
     
     CGGradientRef gradient = CGGradientCreateWithColorComponents(CGColorSpaceCreateDeviceRGB(), compoments, locations, 2);
-    CGContextDrawLinearGradient(context, gradient, CGPointMake(0.0, 0.0), CGPointMake(0.0, 2000.0), 0);
+    CGContextDrawLinearGradient(context, gradient, CGPointMake(0.0, 0.0), CGPointMake(600.0, 2000.0), 0);
     CGImageRef image = CGBitmapContextCreateImage(context);
     
     SKSpriteNode *bg = [SKSpriteNode spriteNodeWithTexture:[SKTexture textureWithCGImage:image]];
@@ -196,8 +248,8 @@ static inline CGPoint rwNormalize(CGPoint a) {
 //    SKShapeNode *bg = [SKShapeNode node];
 //    bg.path = CGPathCreateWithRect(CGRectMake(0.0, 0.0, 50.0, 50.0), &CGAffineTransformIdentity);
 //    bg.fillColor = [SKColor colorWithRed:1 green:0 blue:0 alpha:1];
-    bg.position = CGPointMake(0.0, 1500.0);
-    NSArray *actions = @[[SKAction moveToY:-1500.0 duration:3], [SKAction moveToY:0.0 duration:3]];
+    bg.position = CGPointMake(0.0, 1000.0);
+    NSArray *actions = @[[SKAction moveToY:0.0 duration:3], [SKAction moveToY:1000.0 duration:3]];
     [bg runAction:[SKAction repeatActionForever:[SKAction sequence:actions]]];
     
     [self addChild:bg];
@@ -249,7 +301,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
     
     // Adds Level Text
     _levelText = [SKLabelNode labelNodeWithFontNamed:@"Helvetica Neue Light"];
-    _levelText.text = @"LEVEL 1";
+    _levelText.text = @"TAP TO START";
     _levelText.fontSize = 18;
     _levelText.fontColor = [SKColor colorWithRed:1 green:1 blue:1 alpha:1.0];
     _levelText.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMaxX(self.frame));
@@ -275,7 +327,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
     projectile.physicsBody = [SKPhysicsBody bodyWithCircleOfRadius:projectile.size.width/2];
     projectile.physicsBody.dynamic = YES;
     projectile.physicsBody.categoryBitMask = projectileCategory;
-    projectile.physicsBody.contactTestBitMask = monsterCategory;
+    projectile.physicsBody.contactTestBitMask = asteroidCategory | monsterCategory;
     projectile.physicsBody.collisionBitMask = 0;
     projectile.physicsBody.usesPreciseCollisionDetection = YES;
     projectile.zPosition = 5;
@@ -355,36 +407,99 @@ static inline CGPoint rwNormalize(CGPoint a) {
     SKAction * actionMoveDone = [SKAction removeFromParent];
     
     [monster runAction:[SKAction sequence:@[actionMove, actionMoveDone]]];
-
+    
 }
 
-- (void)projectile:(SKSpriteNode *)projectile didCollideWithMonster:(SKSpriteNode *)monster {
-    [projectile removeFromParent];
-    [monster removeFromParent];
+- (void)addAsteroid {
     
-    [self scoreUpdate];
+    // Create sprite
+    SKSpriteNode * asteroid = [SKSpriteNode spriteNodeWithImageNamed:@"asteroid"];
     
-    // Adds Explosion // >> THIS SECTION SHOULD GET MOVED TO OWN PART, BUT monster.position is the problem <<
+    // Determine where to spawn the monster along the Y axis
+    int minY = asteroid.size.width / 2;
+    int maxY = self.frame.size.width - asteroid.size.width / 2;
+    int rangeY = maxY - minY;
+    int actualY = (arc4random() % rangeY) - minY;
+    
+    // Create the monster slightly off-screen along the right edge,
+    // and along a random position along the Y axis as calculated above
+    asteroid.position = CGPointMake(asteroid.size.width/2 + actualY, self.frame.size.height);
+    [self addChild:asteroid];
+    
+    asteroid.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:asteroid.size];
+    asteroid.physicsBody.dynamic = YES;
+    asteroid.physicsBody.categoryBitMask = asteroidCategory;
+    asteroid.physicsBody.contactTestBitMask = projectileCategory;
+    asteroid.physicsBody.contactTestBitMask = playerCategory;
+    asteroid.physicsBody.collisionBitMask = 0;
+    asteroid.physicsBody.usesPreciseCollisionDetection = YES;
+    asteroid.zPosition = 7;
+    
+    self.physicsWorld.gravity = CGVectorMake(0,0);
+    self.physicsWorld.contactDelegate = self;
+    
+    // Determine speed of the monster
+    int minDuration = 1.0;
+    int maxDuration = 10.0;
+    int rangeDuration = maxDuration - minDuration;
+    int actualDuration = (arc4random() % rangeDuration) + minDuration;
+    
+    // Create the actions
+    SKAction * actionMove = [SKAction moveTo:CGPointMake((arc4random() % rangeY) - minY, 0) duration:actualDuration];
+    SKAction * actionMoveDone = [SKAction removeFromParent];
+    
+    [asteroid runAction:[SKAction sequence:@[actionMove, actionMoveDone]]];
+    
+}
+
+- (void)addExplosion:(SKSpriteNode *) monster {
+    // Adds Explosion
     NSString *smokePath = [[NSBundle mainBundle] pathForResource:@"explosion2" ofType:@"sks"];
     _explosion = [NSKeyedUnarchiver unarchiveObjectWithFile:smokePath];
     _explosion.position = monster.position;
     _explosion.zPosition = 7;
     [self addChild:_explosion];
+}
+
+- (void)addHealthDrop:(SKSpriteNode *) monster {
     
-    // Adds Points Text // >> THIS SECTION SHOULD GET MOVED TO OWN PART, BUT monster.position is the problem <<
-    _pointsText = [SKLabelNode labelNodeWithFontNamed:@"Helvetica Neue Light"];
-    _pointsText.text = @"+75";
-    _pointsText.fontSize = 16;
-    _pointsText.fontColor = [SKColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0];
-    _pointsText.position = CGPointMake(monster.position.x + 30, monster.position.y + 24);
-    _pointsText.zPosition = 100;
-    [self addChild:_pointsText];
     
-    // Adds Points Animation // >> THIS SECTION SHOULD GET MOVED TO OWN PART, BUT monster.position is the problem <<
-    SKAction *fadeoutAction = [SKAction fadeOutWithDuration:0.5];
-    SKAction *fadeinAction = [SKAction fadeInWithDuration:0.3];
-    SKAction *remove = [SKAction removeFromParent];
-    [_pointsText runAction:[SKAction repeatAction:[SKAction sequence:[NSArray arrayWithObjects:fadeinAction, fadeoutAction, remove, nil]] count:1]];
+    SKSpriteNode * health = [SKSpriteNode spriteNodeWithImageNamed:@"health"];
+    health.position = monster.position;
+    [self addChild:health];
+    
+    health.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:health.size];
+    health.physicsBody.dynamic = YES;
+    health.physicsBody.categoryBitMask = healthDropCategory;
+    health.physicsBody.contactTestBitMask = playerCategory;
+    health.physicsBody.collisionBitMask = 0;
+    health.physicsBody.usesPreciseCollisionDetection = YES;
+    health.zPosition = 7;
+    
+    // Health Glow
+//    NSString *pointsDrop = [[NSBundle mainBundle] pathForResource:@"point" ofType:@"sks"];
+//    _point = [NSKeyedUnarchiver unarchiveObjectWithFile:pointsDrop];
+//    _point.position = monster.position;
+//    _point.zPosition = 6;
+//    [self addChild:_point];
+
+}
+
+// Lazer hits Monster
+- (void)projectile:(SKSpriteNode *)projectile didCollideWithMonster:(SKSpriteNode *)monster {
+    
+    // Destorys Lazer and Monster
+    [projectile removeFromParent];
+    [monster removeFromParent];
+    
+    // Updates Score
+    [self scoreUpdate:(SKSpriteNode *) monster];
+    
+    // Adds Explosion
+    [self addExplosion:(SKSpriteNode *) monster];
+    
+    // Adds Health Drop
+    [self addHealthDrop:(SKSpriteNode *) monster];
     
     self.monstersDestroyed++;
     //    if (self.monstersDestroyed > 30) {
@@ -393,26 +508,45 @@ static inline CGPoint rwNormalize(CGPoint a) {
     //        [self.view presentScene:gameOverScene transition: reveal];
     //    }
     
-    // Adds Explosion // >> THIS SECTION SHOULD GET MOVED TO OWN PART, BUT monster.position is the problem <<
-    NSString *pointsDrop = [[NSBundle mainBundle] pathForResource:@"point" ofType:@"sks"];
-    _point = [NSKeyedUnarchiver unarchiveObjectWithFile:pointsDrop];
-    _point.position = monster.position;
-    _point.zPosition = 7;
-    [self addChild:_point];
+}
+
+// Lazer colides with Asteroid
+- (void)projectile:(SKSpriteNode *)projectile didCollideWithAsteroid:(SKSpriteNode *)asteroid {
+    
+    // Destroys Asteroid
+    [asteroid removeFromParent];
+    [projectile removeFromParent];
+    
+    // Adds Explosion
+    [self addExplosion:(SKSpriteNode *) asteroid];
     
 }
 
+// Player colides with Monster
 - (void)player:(SKSpriteNode *)player didCollideWithPlayer:(SKSpriteNode *)monster {
+    
+    // Updates Lifes
+    [self livesUpdate];
+    
+    // Destroys Monster
     [monster removeFromParent];
     
-    [self scoreUpdate];
+    // Adds Explosion
+    [self addExplosion:(SKSpriteNode *) monster];
     
-    // Adds Explosion // >> THIS SECTION SHOULD GET MOVED TO OWN PART, BUT monster.position is the problem <<
-    NSString *smokePath = [[NSBundle mainBundle] pathForResource:@"explosion2" ofType:@"sks"];
-    _explosion = [NSKeyedUnarchiver unarchiveObjectWithFile:smokePath];
-    _explosion.position = monster.position;
-    _explosion.zPosition = 7;
-    [self addChild:_explosion];
+}
+
+// Player colides with Health Drop
+- (void)player:(SKSpriteNode *)player didCollideWithHealthDrop:(SKSpriteNode *)health {
+
+    // Adds health
+    _livesValue += 1;
+    
+    // Updates Life
+    _livesContainer.text = [NSString stringWithFormat:@"%lu",(unsigned long)_livesValue];
+    
+    // Destroys Monster
+    [health removeFromParent];
     
 }
 
@@ -438,34 +572,43 @@ static inline CGPoint rwNormalize(CGPoint a) {
         [self projectile:(SKSpriteNode *) firstBody.node didCollideWithMonster:(SKSpriteNode *) secondBody.node];
     }
     
-    // Monster coliding with player
+    // Monster coliding with Player
     if ((secondBody.categoryBitMask & playerCategory) != 0 &&
         (firstBody.categoryBitMask & monsterCategory) != 0)
     {
-        [self livesUpdate];
-        
         [self player:(SKSpriteNode *) secondBody.node didCollideWithPlayer:(SKSpriteNode *) firstBody.node];
-        
-        if (_livesValue == 0) {
-            SKTransition *reveal = [SKTransition fadeWithDuration:0.5];
-            SKScene * gameOverScene = [[GameOverScene alloc] initWithSize:self.size won:NO];
-            [self.view presentScene:gameOverScene transition: reveal];
-        }
-
+    }
+    
+    // Player colides with Health Drop
+    if ((firstBody.categoryBitMask & playerCategory) != 0 &&
+        (secondBody.categoryBitMask & healthDropCategory) != 0)
+    {
+        [self player:(SKSpriteNode *) firstBody.node didCollideWithHealthDrop:(SKSpriteNode *) secondBody.node];
+    }
+    
+    // Lazer colides with Asteroid
+    if ((firstBody.categoryBitMask & projectileCategory) != 0 &&
+        (secondBody.categoryBitMask & asteroidCategory) != 0)
+    {
+        NSLog(@"test");
+        [self projectile:(SKSpriteNode *) firstBody.node didCollideWithAsteroid:(SKSpriteNode *) secondBody.node];
     }
 }
 
 - (void)update:(NSTimeInterval)currentTime {
-    // Handle time delta.
-    // If we drop below 60fps, we still want everything to move the same distance.
-    CFTimeInterval timeSinceLast = currentTime - self.lastUpdateTimeInterval;
-    self.lastUpdateTimeInterval = currentTime;
-    if (timeSinceLast > 1) { // more than a second since last update
-        timeSinceLast = 1.0 / 60.0;
-        self.lastUpdateTimeInterval = currentTime;
-    }
     
-    [self updateWithTimeSinceLastUpdate:timeSinceLast];
+    if (_started) {
+        // Handle time delta.
+        // If we drop below 60fps, we still want everything to move the same distance.
+        CFTimeInterval timeSinceLast = currentTime - self.lastUpdateTimeInterval;
+        self.lastUpdateTimeInterval = currentTime;
+        if (timeSinceLast > 1) { // more than a second since last update
+            timeSinceLast = 1.0 / 60.0;
+            self.lastUpdateTimeInterval = currentTime;
+        }
+        
+        [self updateWithTimeSinceLastUpdate:timeSinceLast];
+    }
     
 }
 

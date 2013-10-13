@@ -28,8 +28,8 @@
 		A7CB078517FB0BDF00F1B584 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CB078417FB0BDF00F1B584 /* main.m */; };
 		A7CB078917FB0BDF00F1B584 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CB078817FB0BDF00F1B584 /* AppDelegate.m */; };
 		A7CB078C17FB0BDF00F1B584 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7CB078A17FB0BDF00F1B584 /* Main.storyboard */; };
-		A7CB078F17FB0BDF00F1B584 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CB078E17FB0BDF00F1B584 /* ViewController.m */; };
-		A7CB079217FB0BDF00F1B584 /* MyScene.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CB079117FB0BDF00F1B584 /* MyScene.m */; };
+		A7CB078F17FB0BDF00F1B584 /* GameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CB078E17FB0BDF00F1B584 /* GameViewController.m */; };
+		A7CB079217FB0BDF00F1B584 /* GameScene.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CB079117FB0BDF00F1B584 /* GameScene.m */; };
 		A7CB079617FB0BDF00F1B584 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A7CB079517FB0BDF00F1B584 /* Images.xcassets */; };
 		A7CB079D17FB0BDF00F1B584 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7CB079C17FB0BDF00F1B584 /* XCTest.framework */; };
 		A7CB079E17FB0BDF00F1B584 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7CB077617FB0BDF00F1B584 /* Foundation.framework */; };
@@ -75,10 +75,10 @@
 		A7CB078717FB0BDF00F1B584 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		A7CB078817FB0BDF00F1B584 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		A7CB078B17FB0BDF00F1B584 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		A7CB078D17FB0BDF00F1B584 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		A7CB078E17FB0BDF00F1B584 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		A7CB079017FB0BDF00F1B584 /* MyScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyScene.h; sourceTree = "<group>"; };
-		A7CB079117FB0BDF00F1B584 /* MyScene.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyScene.m; sourceTree = "<group>"; };
+		A7CB078D17FB0BDF00F1B584 /* GameViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameViewController.h; sourceTree = "<group>"; };
+		A7CB078E17FB0BDF00F1B584 /* GameViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GameViewController.m; sourceTree = "<group>"; };
+		A7CB079017FB0BDF00F1B584 /* GameScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameScene.h; sourceTree = "<group>"; };
+		A7CB079117FB0BDF00F1B584 /* GameScene.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GameScene.m; sourceTree = "<group>"; };
 		A7CB079517FB0BDF00F1B584 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		A7CB079B17FB0BDF00F1B584 /* SpaceGamerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SpaceGamerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7CB079C17FB0BDF00F1B584 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -207,10 +207,10 @@
 				A7CB078817FB0BDF00F1B584 /* AppDelegate.m */,
 				A7F4D23417FE2D95000564F8 /* GameOverScene.h */,
 				A7F4D23517FE2D95000564F8 /* GameOverScene.m */,
-				A7CB078D17FB0BDF00F1B584 /* ViewController.h */,
-				A7CB078E17FB0BDF00F1B584 /* ViewController.m */,
-				A7CB079017FB0BDF00F1B584 /* MyScene.h */,
-				A7CB079117FB0BDF00F1B584 /* MyScene.m */,
+				A7CB078D17FB0BDF00F1B584 /* GameViewController.h */,
+				A7CB078E17FB0BDF00F1B584 /* GameViewController.m */,
+				A7CB079017FB0BDF00F1B584 /* GameScene.h */,
+				A7CB079117FB0BDF00F1B584 /* GameScene.m */,
 				A7CB079517FB0BDF00F1B584 /* Images.xcassets */,
 				A7CB077F17FB0BDF00F1B584 /* Supporting Files */,
 			);
@@ -364,8 +364,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				A7F4D23617FE2D95000564F8 /* GameOverScene.m in Sources */,
-				A7CB079217FB0BDF00F1B584 /* MyScene.m in Sources */,
-				A7CB078F17FB0BDF00F1B584 /* ViewController.m in Sources */,
+				A7CB079217FB0BDF00F1B584 /* GameScene.m in Sources */,
+				A7CB078F17FB0BDF00F1B584 /* GameViewController.m in Sources */,
 				A7CB078917FB0BDF00F1B584 /* AppDelegate.m in Sources */,
 				A7CB078517FB0BDF00F1B584 /* main.m in Sources */,
 			);

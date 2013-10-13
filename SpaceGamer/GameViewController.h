@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  GameViewController.h
 //  SpaceGamer
 //
 

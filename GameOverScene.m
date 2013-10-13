@@ -7,7 +7,8 @@
 //
 
 #import "GameOverScene.h"
-#import "MyScene.h"
+#import "GameScene.h"
+#import "GameViewController.h"
 
 @implementation GameOverScene
 
@@ -23,17 +24,36 @@
     return retryNode;
 }
 
+- (SKLabelNode *)homeButton
+{
+    SKLabelNode *homeNode = [SKLabelNode labelNodeWithFontNamed:@"Helvetica Neue Light"];
+    homeNode.position = CGPointMake(self.size.width/2, self.size.height/3);
+    homeNode.name = @"homeButton";//how the node is identified later
+    homeNode.text = @"Home";
+    homeNode.fontSize = 24;
+    homeNode.fontColor = [SKColor whiteColor];
+    homeNode.zPosition = 1.0;
+    return homeNode;
+}
+
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     UITouch *touch = [touches anyObject];
     CGPoint location = [touch locationInNode:self];
     SKNode *node = [self nodeAtPoint:location];
     
-    //if fire button touched, bring the rain
+    // Retry Button
     if ([node.name isEqualToString:@"retryButton"]) {
         SKTransition *reveal = [SKTransition fadeWithDuration:0.5];
-        SKScene * myScene = [[MyScene alloc] initWithSize:self.size];
-        [self.view presentScene:myScene transition: reveal];
+        SKScene * gameScene = [[GameScene alloc] initWithSize:self.size];
+        [self.view presentScene:gameScene transition: reveal];
+    }
+    
+    // Retry Button
+    if ([node.name isEqualToString:@"homeButton"]) {
+        SKTransition *reveal = [SKTransition fadeWithDuration:0.5];
+        SKScene * viewController = [[viewController alloc] initWithSize:self.size];
+        [self.view presentScene:viewController transition: reveal];
     }
 }
 
@@ -59,7 +79,7 @@
         gameOver.position = CGPointMake(self.size.width/2, self.size.height/2);
         [self addChild:gameOver];
         
-        // Game Over / Win Settings
+        // Score
         SKLabelNode *score = [SKLabelNode labelNodeWithFontNamed:@"Helvetica Neue Light"];
         score.text = @"003433";
         score.fontSize = 24;
@@ -69,6 +89,7 @@
         
         [self addChild: [self retryButton]];
         
+        // Background
         SKSpriteNode * background;
         background = [SKSpriteNode spriteNodeWithImageNamed:@"bg3"];
         background.position = CGPointMake(CGRectGetMidX(self.frame), 500);
