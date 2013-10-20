@@ -7,7 +7,6 @@
 //
 
 #import "GameScene.h"
-#import "GameOverScene.h"
 
 @interface GameScene () <SKPhysicsContactDelegate>
 
@@ -15,33 +14,11 @@
 
 @implementation GameScene;
 
-static const uint32_t projectileCategory     =  0x1 << 0;
-static const uint32_t monsterCategory        =  0x1 << 1;
-static const uint32_t playerCategory         =  0x1 << 2;
-static const uint32_t healthDropCategory     =  0x1 << 3;
-static const uint32_t asteroidCategory       =  0x1 << 4;
-
-static inline CGPoint rwAdd(CGPoint a, CGPoint b) {
-    return CGPointMake(a.x + b.x, a.y + b.y);
-}
-
-static inline CGPoint rwSub(CGPoint a, CGPoint b) {
-    return CGPointMake(a.x - b.x, a.y - b.y);
-}
-
-static inline CGPoint rwMult(CGPoint a, float b) {
-    return CGPointMake(a.x * b, a.y * b);
-}
-
-static inline float rwLength(CGPoint a) {
-    return sqrtf(a.x * a.x + a.y * a.y);
-}
-
-// Makes a vector have a length of 1
-static inline CGPoint rwNormalize(CGPoint a) {
-    float length = rwLength(a);
-    return CGPointMake(a.x / length, a.y / length);
-}
+const uint32_t good_guys    =  0x1 << 0;
+const uint32_t bad_guys     =  0x1 << 1;
+const uint32_t power_ups    =  0x1 << 2;
+const uint32_t bad_lazers   =  0x1 << 3;
+const uint32_t good_lazers  =  0x1 << 3;
 
 -(void)scoreUpdate:(SKSpriteNode *) monster{
     
@@ -68,7 +45,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
 }
 
 -(void)livesUpdate{
-    if (_livesValue > 0) {
+    if (_livesValue > 1) {
         
         // Removes Life for getting hit
         self.livesValue -= 1;
@@ -97,7 +74,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
     
     // Spawning Asteroids
     self.lastAsteroidTimeInterval += timeSinceLast;
-    if (self.lastAsteroidTimeInterval > 1.2) {
+    if (self.lastAsteroidTimeInterval > 1.5) {
         self.lastAsteroidTimeInterval = 0;
         [self addAsteroid];
     }
@@ -105,10 +82,10 @@ static inline CGPoint rwNormalize(CGPoint a) {
     // Spawning Enemies
     self.lastSpawnTimeInterval += timeSinceLast;
     if (_scoreValue == 0) {
-        _spawnSpeed = 1;
+        _spawnSpeed = 1.2;
     }
     else {
-        _spawnSpeed = 1;  // / _scoreValue;
+        _spawnSpeed = 1.2;  // / _scoreValue;
     }
     if (self.lastBossSpawnTimeInterval > 10 && self.lastSpawnTimeInterval > _spawnSpeed) {
         self.lastSpawnTimeInterval = 0;
@@ -141,12 +118,12 @@ static inline CGPoint rwNormalize(CGPoint a) {
 
 - (void)reset
 {
-    [self removeAllChildren];
-    self.lastAsteroidTimeInterval = 0.0;
-    self.lastSpawnTimeInterval = 0.0;
-    self.lastLazerTimeInterval = 0.0;
-    self.lastUpdateTimeInterval = 0.0;
-    self.lastBossSpawnTimeInterval = 0.0;
+    // Resets Timers
+    _lastSpawnTimeInterval = 0;
+    _lastAsteroidTimeInterval = 0;
+    _lastLazerTimeInterval = 0;
+    _lastUpdateTimeInterval = 0;
+    _lastBossSpawnTimeInterval = 0;
     
     // Adds Background
     [self addBackground];
@@ -181,49 +158,6 @@ static inline CGPoint rwNormalize(CGPoint a) {
 
     [self.fuel runAction:moveFuel];
     [self.player runAction:movePlayer];
-    
-}
-
-- (void)addPlayer {
-    
-    self.player = [SKSpriteNode spriteNodeWithImageNamed:@"spaceship5"];
-    self.player.position = CGPointMake(CGRectGetMidX(self.frame), 120);
-    self.player.zPosition = 10;
-    self.player.Scale = 0.5;
-    [self addChild:self.player];
-    
-    self.player.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:self.player.size];
-    self.player.physicsBody.dynamic = YES;
-    self.player.physicsBody.categoryBitMask = playerCategory;
-    self.player.physicsBody.contactTestBitMask = monsterCategory;
-    self.player.physicsBody.contactTestBitMask = healthDropCategory;
-    self.player.physicsBody.collisionBitMask = 0;
-    self.player.physicsBody.usesPreciseCollisionDetection = YES;
-    
-    // Adds Fuel Effect
-    NSString *fuelPath = [[NSBundle mainBundle] pathForResource:@"fuel" ofType:@"sks"];
-    _fuel = [NSKeyedUnarchiver unarchiveObjectWithFile:fuelPath];
-    _fuel.position = CGPointMake(self.player.position.x, self.player.position.y - 24);
-    _fuel.zPosition = 7;
-    _fuel.Scale = 0.2;
-    [self addChild:_fuel];
-}
-
-- (void)addBoss {
-    
-    _boss = [SKSpriteNode spriteNodeWithImageNamed:@"boss"];
-    _boss.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMaxY(self.frame) + _boss.size.height);
-    _boss.zPosition = 10;
-    [self addChild:_boss];
-    
-    
-    SKAction *enterBoss = [SKAction moveTo:CGPointMake(CGRectGetMidX(self.frame), CGRectGetMaxY(self.frame) - _boss.size.height /1.5) duration:3];
-    SKAction *leftBoss = [SKAction moveToX:CGRectGetMaxX(self.frame) duration:3];
-    SKAction *rightBoss = [SKAction moveToX:CGRectGetMinX(self.frame) duration:3];
-    
-    [self.boss runAction:[SKAction repeatAction:enterBoss count:1]];
-    [self.boss runAction:[SKAction repeatActionForever:[SKAction sequence:@[leftBoss, rightBoss]]]];
-    
     
 }
 
@@ -294,7 +228,7 @@ static inline CGPoint rwNormalize(CGPoint a) {
     [self addChild:_scoreContainer];
     
     // Adds Lives Value
-    _livesValue = 3;
+    _livesValue = 100;
     _livesContainer = [SKLabelNode labelNodeWithFontNamed:@"Helvetica Neue Light"];
     _livesContainer.horizontalAlignmentMode = NSTextAlignmentLeft;
     _livesContainer.text = [NSString stringWithFormat:@"%lu",(unsigned long)_livesValue];
@@ -304,14 +238,53 @@ static inline CGPoint rwNormalize(CGPoint a) {
     _livesContainer.zPosition = 100;
     [self addChild:_livesContainer];
     
+    // Adds Health Graphics
+    SKShapeNode * healthBar = [SKShapeNode node];
+    CGMutablePathRef path = CGPathCreateMutable();
+    CGPathAddRect(path, NULL, CGRectMake(CGRectGetMaxX(self.frame) - 30, 20, 20, 200));
+    healthBar.path = path;
+    [healthBar setFillColor:[UIColor colorWithRed:0.16 green:0.21 blue:0.32 alpha:1.0]];
+    [healthBar setStrokeColor:[UIColor colorWithRed:0.16 green:0.21 blue:0.32 alpha:0.0]];
+    CGPathRelease(path);
+    [self addChild:healthBar];
+    
+    SKShapeNode * healthBarValue = [SKShapeNode node];
+    CGMutablePathRef paththree = CGPathCreateMutable();
+    CGPathAddRect(paththree, NULL, CGRectMake(CGRectGetMaxX(self.frame) - 30, 20, 20, _livesValue));
+    healthBarValue.path = paththree;
+    [healthBarValue setFillColor:[UIColor colorWithRed:0.24 green:0.69 blue:0.80 alpha:1.0]];
+    [healthBarValue setStrokeColor:[UIColor colorWithRed:0.16 green:0.21 blue:0.32 alpha:0.0]];
+    CGPathRelease(paththree);
+    [self addChild:healthBarValue];
+    
+    SKShapeNode * healthBarOverlay = [SKShapeNode node];
+    CGMutablePathRef pathtwo = CGPathCreateMutable();
+    CGPathAddRect(pathtwo, NULL, CGRectMake(CGRectGetMaxX(self.frame) - 20, 20, 20/2, 200));
+    healthBarOverlay.path = pathtwo;
+    [healthBarOverlay setFillColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.2]];
+    [healthBarOverlay setStrokeColor:[UIColor colorWithRed:0.16 green:0.21 blue:0.32 alpha:0.0]];
+    CGPathRelease(pathtwo);
+    [self addChild:healthBarOverlay];
+    
+    
     // Adds Level Text
     _levelText = [SKLabelNode labelNodeWithFontNamed:@"Helvetica Neue Light"];
     _levelText.text = @"TAP TO START";
     _levelText.fontSize = 18;
-    _levelText.fontColor = [SKColor colorWithRed:1 green:1 blue:1 alpha:1.0];
+    _levelText.fontColor = [SKColor colorWithRed:1 green:1 blue:1 alpha:0.8];
     _levelText.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMaxX(self.frame));
     _levelText.zPosition = 100;
     [self addChild:_levelText];
+    
+    SKAction *pulse = [SKAction sequence:@[
+                                           [SKAction fadeOutWithDuration:0],
+                                           [SKAction waitForDuration:0.3],
+                                           [SKAction fadeInWithDuration:1],
+                                           [SKAction waitForDuration:0.5],
+                                           [SKAction fadeOutWithDuration:1]
+                                        ]
+    ];
+    [_levelText runAction:[SKAction repeatActionForever:pulse]];
     
 }
 
@@ -331,26 +304,17 @@ static inline CGPoint rwNormalize(CGPoint a) {
     
     projectile.physicsBody = [SKPhysicsBody bodyWithCircleOfRadius:projectile.size.width/2];
     projectile.physicsBody.dynamic = YES;
-    projectile.physicsBody.categoryBitMask = projectileCategory;
-    projectile.physicsBody.contactTestBitMask = asteroidCategory | monsterCategory;
+    projectile.physicsBody.categoryBitMask = good_lazers;
+    projectile.physicsBody.contactTestBitMask = bad_guys;
+    //projectile.physicsBody.collisionBitMask = bad_guys | bad_guys;
     projectile.physicsBody.collisionBitMask = 0;
     projectile.physicsBody.usesPreciseCollisionDetection = YES;
     projectile.zPosition = 5;
-    
-    // Determine offset of location to lazer
-    CGPoint offset = rwSub(CGPointMake(self.player.position.x, CGRectGetHeight(self.frame)), projectile.position);
-    
     // Adds Lazer
     [self addChild:projectile];
     
-    // Get the direction of where to shoot
-    CGPoint direction = rwNormalize(offset);
-    
-    // Make it shoot far enough to be guaranteed off screen
-    CGPoint shootAmount = rwMult(direction, 1000);
-    
     // Add the shoot amount to the current position
-    CGPoint realDest = rwAdd(shootAmount, projectile.position);
+    CGPoint realDest = CGPointMake(self.player.position.x, CGRectGetMaxY(self.frame));
     
     // Adds Lazer Effect
     NSString *lazerPath = [[NSBundle mainBundle] pathForResource:@"fuel" ofType:@"sks"];
@@ -373,10 +337,35 @@ static inline CGPoint rwNormalize(CGPoint a) {
     
 }
 
+- (void)addPlayer {
+    
+    self.player = [SKSpriteNode spriteNodeWithImageNamed:@"spaceship5"];
+    self.player.position = CGPointMake(CGRectGetMidX(self.frame), 120);
+    self.player.zPosition = 10;
+    self.player.Scale = 0.5;
+    [self addChild:self.player];
+    
+    self.player.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:self.player.size];
+    self.player.physicsBody.dynamic = YES;
+    self.player.physicsBody.categoryBitMask = good_guys;
+    self.player.physicsBody.contactTestBitMask = bad_guys | power_ups | bad_lazers;
+    //self.player.physicsBody.collisionBitMask = bad_guys;
+    self.player.physicsBody.collisionBitMask = 0;
+    self.player.physicsBody.usesPreciseCollisionDetection = YES;
+    
+    // Adds Fuel Effect
+    NSString *fuelPath = [[NSBundle mainBundle] pathForResource:@"fuel" ofType:@"sks"];
+    _fuel = [NSKeyedUnarchiver unarchiveObjectWithFile:fuelPath];
+    _fuel.position = CGPointMake(self.player.position.x, self.player.position.y - 24);
+    _fuel.zPosition = 7;
+    _fuel.Scale = 0.2;
+    [self addChild:_fuel];
+}
+
 - (void)addMonster {
     
     // Create sprite
-    SKSpriteNode * monster = [SKSpriteNode spriteNodeWithImageNamed:@"enemy2"];
+    SKSpriteNode * monster = [SKSpriteNode spriteNodeWithImageNamed:@"enemy4"];
     
     // Determine where to spawn the monster along the Y axis
     int minY = monster.size.width / 2;
@@ -391,15 +380,22 @@ static inline CGPoint rwNormalize(CGPoint a) {
     
     monster.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:monster.size];
     monster.physicsBody.dynamic = YES;
-    monster.physicsBody.categoryBitMask = monsterCategory;
-    monster.physicsBody.contactTestBitMask = projectileCategory;
-    monster.physicsBody.contactTestBitMask = playerCategory;
+    monster.physicsBody.categoryBitMask = bad_guys;
+    monster.physicsBody.contactTestBitMask = good_guys | good_lazers;
+    //monster.physicsBody.collisionBitMask = good_guys | good_lazers;
     monster.physicsBody.collisionBitMask = 0;
     monster.physicsBody.usesPreciseCollisionDetection = YES;
     monster.zPosition = 7;
+    monster.Scale = 0.8;
     
-    self.physicsWorld.gravity = CGVectorMake(0,0);
-    self.physicsWorld.contactDelegate = self;
+    // Adds Fuel Effect
+//    NSString *fuelPath = [[NSBundle mainBundle] pathForResource:@"fuel2" ofType:@"sks"];
+//    _fuel2 = [NSKeyedUnarchiver unarchiveObjectWithFile:fuelPath];
+//    _fuel2.position = CGPointMake(monster.position.x,monster.position.y + 48);
+//    _fuel2.zPosition = 7;
+//    _fuel2.Scale = 0.5;
+//    _fuel2.zRotation = 0.0;
+//    [self addChild:_fuel2];
     
     // Determine speed of the monster
     int minDuration = 1.0;
@@ -409,9 +405,11 @@ static inline CGPoint rwNormalize(CGPoint a) {
     
     // Create the actions
     SKAction * actionMove = [SKAction moveTo:CGPointMake(monster.size.width/2 + actualY, 0) duration:actualDuration];
+//    SKAction * actionFuelMove = [SKAction moveTo:CGPointMake(monster.size.width/2 + actualY, 0 + 48) duration:actualDuration];
     SKAction * actionMoveDone = [SKAction removeFromParent];
     
     [monster runAction:[SKAction sequence:@[actionMove, actionMoveDone]]];
+//    [_fuel2 runAction:[SKAction sequence:@[actionFuelMove, actionMoveDone]]];
     
 }
 
@@ -433,15 +431,12 @@ static inline CGPoint rwNormalize(CGPoint a) {
     
     asteroid.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:asteroid.size];
     asteroid.physicsBody.dynamic = YES;
-    asteroid.physicsBody.categoryBitMask = asteroidCategory;
-    asteroid.physicsBody.contactTestBitMask = projectileCategory;
-    asteroid.physicsBody.contactTestBitMask = playerCategory;
+    asteroid.physicsBody.categoryBitMask = bad_guys;
+    asteroid.physicsBody.contactTestBitMask = good_guys | good_lazers;
+    //asteroid.physicsBody.collisionBitMask = good_guys | good_lazers;
     asteroid.physicsBody.collisionBitMask = 0;
     asteroid.physicsBody.usesPreciseCollisionDetection = YES;
     asteroid.zPosition = 7;
-    
-    self.physicsWorld.gravity = CGVectorMake(0,0);
-    self.physicsWorld.contactDelegate = self;
     
     // Determine speed of the monster
     int minDuration = 1.0;
@@ -457,6 +452,23 @@ static inline CGPoint rwNormalize(CGPoint a) {
     
 }
 
+- (void)addBoss {
+    
+    _boss = [SKSpriteNode spriteNodeWithImageNamed:@"boss"];
+    _boss.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMaxY(self.frame) + _boss.size.height);
+    _boss.zPosition = 10;
+    [self addChild:_boss];
+    
+    SKAction *enterBoss = [SKAction moveTo:CGPointMake(CGRectGetMidX(self.frame), CGRectGetMaxY(self.frame) - _boss.size.height /1.5) duration:3];
+    SKAction *leftBoss = [SKAction moveToX:CGRectGetMaxX(self.frame) duration:3];
+    SKAction *rightBoss = [SKAction moveToX:CGRectGetMinX(self.frame) duration:3];
+    
+    [self.boss runAction:[SKAction repeatAction:enterBoss count:1]];
+    [self.boss runAction:[SKAction repeatActionForever:[SKAction sequence:@[leftBoss, rightBoss]]]];
+    
+    
+}
+
 - (void)addExplosion:(SKSpriteNode *) monster {
     // Adds Explosion
     NSString *smokePath = [[NSBundle mainBundle] pathForResource:@"explosion2" ofType:@"sks"];
@@ -469,135 +481,71 @@ static inline CGPoint rwNormalize(CGPoint a) {
 - (void)addHealthDrop:(SKSpriteNode *) monster {
     
     
-    SKSpriteNode * health = [SKSpriteNode spriteNodeWithImageNamed:@"health"];
-    health.position = monster.position;
-    [self addChild:health];
-    
-    health.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:health.size];
-    health.physicsBody.dynamic = YES;
-    health.physicsBody.categoryBitMask = healthDropCategory;
-    health.physicsBody.contactTestBitMask = playerCategory;
-    health.physicsBody.collisionBitMask = 0;
-    health.physicsBody.usesPreciseCollisionDetection = YES;
-    health.zPosition = 7;
+//    SKSpriteNode * health = [SKSpriteNode spriteNodeWithImageNamed:@"health"];
+//    health.position = monster.position;
+//    [self addChild:health];
+//    
+//    health.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:health.size];
+//    health.physicsBody.dynamic = YES;
+//    health.physicsBody.categoryBitMask = healthDropCategory;
+//    health.physicsBody.contactTestBitMask = playerCategory;
+//    health.physicsBody.collisionBitMask = 0;
+//    health.physicsBody.usesPreciseCollisionDetection = YES;
+//    health.zPosition = 7;
     
     // Health Glow
-//    NSString *pointsDrop = [[NSBundle mainBundle] pathForResource:@"point" ofType:@"sks"];
-//    _point = [NSKeyedUnarchiver unarchiveObjectWithFile:pointsDrop];
-//    _point.position = monster.position;
-//    _point.zPosition = 6;
-//    [self addChild:_point];
+    NSString *pointsDrop = [[NSBundle mainBundle] pathForResource:@"point" ofType:@"sks"];
+    _point = [NSKeyedUnarchiver unarchiveObjectWithFile:pointsDrop];
+    _point.position = monster.position;
+    _point.zPosition = 6;
+    [self addChild:_point];
+    
+//    [health runAction:[SKAction sequence:@[actionMove, actionMoveDone]]];
 
-}
-
-// Lazer hits Monster
-- (void)projectile:(SKSpriteNode *)projectile didCollideWithMonster:(SKSpriteNode *)monster {
-    
-    // Destorys Lazer and Monster
-    [projectile removeFromParent];
-    [monster removeFromParent];
-    
-    // Updates Score
-    [self scoreUpdate:(SKSpriteNode *) monster];
-    
-    // Adds Explosion
-    [self addExplosion:(SKSpriteNode *) monster];
-    
-    // Adds Health Drop
-    [self addHealthDrop:(SKSpriteNode *) monster];
-    
-    self.monstersDestroyed++;
-    //    if (self.monstersDestroyed > 30) {
-    //        SKTransition *reveal = [SKTransition fadeWithDuration:0.5];
-    //        SKScene * gameOverScene = [[GameOverScene alloc] initWithSize:self.size won:YES];
-    //        [self.view presentScene:gameOverScene transition: reveal];
-    //    }
-    
-}
-
-// Lazer colides with Asteroid
-- (void)projectile:(SKSpriteNode *)projectile didCollideWithAsteroid:(SKSpriteNode *)asteroid {
-    
-    // Destroys Asteroid
-    [asteroid removeFromParent];
-    [projectile removeFromParent];
-    
-    // Adds Explosion
-    [self addExplosion:(SKSpriteNode *) asteroid];
-    
-}
-
-// Player colides with Monster
-- (void)player:(SKSpriteNode *)player didCollideWithPlayer:(SKSpriteNode *)monster {
-    
-    // Updates Lifes
-    [self livesUpdate];
-    
-    // Destroys Monster
-    [monster removeFromParent];
-    
-    // Adds Explosion
-    [self addExplosion:(SKSpriteNode *) monster];
-    
-}
-
-// Player colides with Health Drop
-- (void)player:(SKSpriteNode *)player didCollideWithHealthDrop:(SKSpriteNode *)health {
-
-    // Adds health
-    _livesValue += 1;
-    
-    // Updates Life
-    _livesContainer.text = [NSString stringWithFormat:@"%lu",(unsigned long)_livesValue];
-    
-    // Destroys Monster
-    [health removeFromParent];
-    
 }
 
 - (void)didBeginContact:(SKPhysicsContact *)contact
 {
-    SKPhysicsBody *firstBody, *secondBody;
     
-    if (contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask)
-    {
-        firstBody = contact.bodyA;
-        secondBody = contact.bodyB;
-    }
-    else
-    {
-        firstBody = contact.bodyB;
-        secondBody = contact.bodyA;
-    }
+    SKAction *pulseRed = [SKAction sequence:@[
+                                              [SKAction colorizeWithColor:[SKColor redColor] colorBlendFactor:1.0 duration:0.1],
+                                              [SKAction waitForDuration:0.1],
+                                              [SKAction colorizeWithColorBlendFactor:0.0 duration:0.1]]];
     
-    // Lazer coliding with monster
-    if ((firstBody.categoryBitMask & projectileCategory) != 0 &&
-        (secondBody.categoryBitMask & monsterCategory) != 0)
-    {
-        [self projectile:(SKSpriteNode *) firstBody.node didCollideWithMonster:(SKSpriteNode *) secondBody.node];
-    }
+    SKAction * removeAction = [SKAction removeFromParent];
     
-    // Monster coliding with Player
-    if ((secondBody.categoryBitMask & playerCategory) != 0 &&
-        (firstBody.categoryBitMask & monsterCategory) != 0)
+    // Lazer colides with Enemy
+    if ((contact.bodyA.categoryBitMask & bad_guys) != 0)
     {
-        [self player:(SKSpriteNode *) secondBody.node didCollideWithPlayer:(SKSpriteNode *) firstBody.node];
+        SKNode *enemy = (contact.bodyA.categoryBitMask & good_lazers) ? contact.bodyB.node : contact.bodyA.node;
+
+        // Updates Score
+        [self scoreUpdate:(SKSpriteNode *) enemy];
+        
+        // Adds Explosion
+        [self addExplosion:(SKSpriteNode *) enemy];
+        
+        // Adds Health Drop
+        [self addHealthDrop:(SKSpriteNode *) enemy];
+        
+        [enemy runAction:[SKAction repeatAction:[SKAction sequence:[NSArray arrayWithObjects:pulseRed, removeAction, nil]] count:1]];
     }
     
-    // Player colides with Health Drop
-    if ((firstBody.categoryBitMask & playerCategory) != 0 &&
-        (secondBody.categoryBitMask & healthDropCategory) != 0)
+    // Player colides with Enemy
+    if ((contact.bodyB.categoryBitMask & bad_guys) != 0)
     {
-        [self player:(SKSpriteNode *) firstBody.node didCollideWithHealthDrop:(SKSpriteNode *) secondBody.node];
+        SKNode *enemy = (contact.bodyB.categoryBitMask & good_guys) ? contact.bodyA.node : contact.bodyB.node;
+        
+        // Updates Lifes
+        [self livesUpdate];
+        
+        // Destroys Monster
+        [enemy removeFromParent];
+        
+        // Adds Explosion
+        [self addExplosion:(SKSpriteNode *) enemy];
     }
-    
-    // Lazer colides with Asteroid
-    if ((firstBody.categoryBitMask & projectileCategory) != 0 &&
-        (secondBody.categoryBitMask & asteroidCategory) != 0)
-    {
-        NSLog(@"test");
-        [self projectile:(SKSpriteNode *) firstBody.node didCollideWithAsteroid:(SKSpriteNode *) secondBody.node];
-    }
+
 }
 
 - (void)update:(NSTimeInterval)currentTime {
@@ -615,6 +563,16 @@ static inline CGPoint rwNormalize(CGPoint a) {
         [self updateWithTimeSinceLastUpdate:timeSinceLast];
     }
     
+}
+
+-(void)didEvaluateActions {
+    // Each Frame
+    // -> update: -> SKScene Evaluate Actions -> didEvaluateActions -> SKScene Simulate Physics -> didSimulatePhysics -> Renders
+    
+    SKAction * actionMove = [SKAction moveTo:self.player.position duration:0.7];
+    SKAction * actionMoveDone = [SKAction removeFromParent];
+    
+    [_point runAction:[SKAction sequence:@[actionMove, actionMoveDone]]];
 }
 
 @end

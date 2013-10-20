@@ -20,9 +20,11 @@
 @property SKEmitterNode *stars;
 @property SKEmitterNode *stars2;
 @property SKEmitterNode *fuel;
+@property SKEmitterNode *fuel2;
 @property SKEmitterNode *point;
 @property (nonatomic) SKSpriteNode * player;
 @property (nonatomic) SKSpriteNode * monster;
+@property (nonatomic) SKSpriteNode * projectile;
 @property (nonatomic) SKSpriteNode * boss;
 @property (nonatomic) SKSpriteNode * background;
 @property (nonatomic) SKLabelNode * levelText;
@@ -39,6 +41,7 @@
 @property (nonatomic) float lazerSpeed;
 @property (nonatomic) float spawnSpeed;
 @property (nonatomic) bool started;
+@property (nonatomic) CGMutablePathRef paththree;
 - (void)reset;
 -(void)scoreUpdate;
 -(void)livesUpdate;

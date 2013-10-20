@@ -8,12 +8,24 @@
 
 /* Begin PBXBuildFile section */
 		936CA6E2180AFB0A006A3820 /* GameOverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 936CA6E1180AFB0A006A3820 /* GameOverViewController.m */; };
+		A713BE2F180B8DC70062A2B1 /* fuel2.sks in Resources */ = {isa = PBXBuildFile; fileRef = A713BE2E180B8DC70062A2B1 /* fuel2.sks */; };
 		A7148A0E1808A35E00EAC7B7 /* point.sks in Resources */ = {isa = PBXBuildFile; fileRef = A7148A0D1808A35E00EAC7B7 /* point.sks */; };
 		A7148A101808FF3B00EAC7B7 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7148A0F1808FF3B00EAC7B7 /* GameKit.framework */; };
 		A723D1761806302D0042E4A3 /* stars.sks in Resources */ = {isa = PBXBuildFile; fileRef = A723D1741806302D0042E4A3 /* stars.sks */; };
 		A723D1771806302D0042E4A3 /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = A723D1751806302D0042E4A3 /* spark.png */; };
 		A723D179180635F50042E4A3 /* stars2.sks in Resources */ = {isa = PBXBuildFile; fileRef = A723D178180635F50042E4A3 /* stars2.sks */; };
 		A723D180180638410042E4A3 /* fuel.sks in Resources */ = {isa = PBXBuildFile; fileRef = A723D17F180638410042E4A3 /* fuel.sks */; };
+		A724D0D31811408900647544 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = A724D0C81811408900647544 /* LICENSE.txt */; };
+		A724D0D41811408900647544 /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A724D0C91811408900647544 /* OpenSans-Bold.ttf */; };
+		A724D0D51811408900647544 /* OpenSans-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A724D0CA1811408900647544 /* OpenSans-BoldItalic.ttf */; };
+		A724D0D61811408900647544 /* OpenSans-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A724D0CB1811408900647544 /* OpenSans-ExtraBold.ttf */; };
+		A724D0D71811408900647544 /* OpenSans-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A724D0CC1811408900647544 /* OpenSans-ExtraBoldItalic.ttf */; };
+		A724D0D81811408900647544 /* OpenSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A724D0CD1811408900647544 /* OpenSans-Italic.ttf */; };
+		A724D0D91811408900647544 /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A724D0CE1811408900647544 /* OpenSans-Light.ttf */; };
+		A724D0DA1811408900647544 /* OpenSans-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A724D0CF1811408900647544 /* OpenSans-LightItalic.ttf */; };
+		A724D0DB1811408900647544 /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A724D0D01811408900647544 /* OpenSans-Regular.ttf */; };
+		A724D0DC1811408900647544 /* OpenSans-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A724D0D11811408900647544 /* OpenSans-Semibold.ttf */; };
+		A724D0DD1811408900647544 /* OpenSans-SemiboldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A724D0D21811408900647544 /* OpenSans-SemiboldItalic.ttf */; };
 		A74B84841804441F00217036 /* explosion2.sks in Resources */ = {isa = PBXBuildFile; fileRef = A74B84821804441F00217036 /* explosion2.sks */; };
 		A74B84871804448400217036 /* lazer.png in Resources */ = {isa = PBXBuildFile; fileRef = A74B84861804448400217036 /* lazer.png */; };
 		A74B848F1804470800217036 /* lazer.sks in Resources */ = {isa = PBXBuildFile; fileRef = A74B848E1804470800217036 /* lazer.sks */; };
@@ -37,7 +49,6 @@
 		A7CB079F17FB0BDF00F1B584 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7CB077A17FB0BDF00F1B584 /* UIKit.framework */; };
 		A7CB07A717FB0BDF00F1B584 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A7CB07A517FB0BDF00F1B584 /* InfoPlist.strings */; };
 		A7CB07A917FB0BDF00F1B584 /* SpaceGamerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CB07A817FB0BDF00F1B584 /* SpaceGamerTests.m */; };
-		A7F4D23617FE2D95000564F8 /* GameOverScene.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F4D23517FE2D95000564F8 /* GameOverScene.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,12 +64,24 @@
 /* Begin PBXFileReference section */
 		936CA6E0180AFB0A006A3820 /* GameOverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameOverViewController.h; sourceTree = "<group>"; };
 		936CA6E1180AFB0A006A3820 /* GameOverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameOverViewController.m; sourceTree = "<group>"; };
+		A713BE2E180B8DC70062A2B1 /* fuel2.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = fuel2.sks; sourceTree = "<group>"; };
 		A7148A0D1808A35E00EAC7B7 /* point.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = point.sks; sourceTree = "<group>"; };
 		A7148A0F1808FF3B00EAC7B7 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		A723D1741806302D0042E4A3 /* stars.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = stars.sks; sourceTree = "<group>"; };
 		A723D1751806302D0042E4A3 /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
 		A723D178180635F50042E4A3 /* stars2.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = stars2.sks; sourceTree = "<group>"; };
 		A723D17F180638410042E4A3 /* fuel.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = fuel.sks; sourceTree = "<group>"; };
+		A724D0C81811408900647544 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
+		A724D0C91811408900647544 /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Bold.ttf"; sourceTree = "<group>"; };
+		A724D0CA1811408900647544 /* OpenSans-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-BoldItalic.ttf"; sourceTree = "<group>"; };
+		A724D0CB1811408900647544 /* OpenSans-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-ExtraBold.ttf"; sourceTree = "<group>"; };
+		A724D0CC1811408900647544 /* OpenSans-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-ExtraBoldItalic.ttf"; sourceTree = "<group>"; };
+		A724D0CD1811408900647544 /* OpenSans-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Italic.ttf"; sourceTree = "<group>"; };
+		A724D0CE1811408900647544 /* OpenSans-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Light.ttf"; sourceTree = "<group>"; };
+		A724D0CF1811408900647544 /* OpenSans-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-LightItalic.ttf"; sourceTree = "<group>"; };
+		A724D0D01811408900647544 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Regular.ttf"; sourceTree = "<group>"; };
+		A724D0D11811408900647544 /* OpenSans-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Semibold.ttf"; sourceTree = "<group>"; };
+		A724D0D21811408900647544 /* OpenSans-SemiboldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-SemiboldItalic.ttf"; sourceTree = "<group>"; };
 		A74B84821804441F00217036 /* explosion2.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = explosion2.sks; sourceTree = "<group>"; };
 		A74B84861804448400217036 /* lazer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lazer.png; path = Images.xcassets/lazer.imageset/lazer.png; sourceTree = "<group>"; };
 		A74B848E1804470800217036 /* lazer.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = lazer.sks; path = ../lazer.sks; sourceTree = "<group>"; };
@@ -88,8 +111,6 @@
 		A7CB07A417FB0BDF00F1B584 /* SpaceGamerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SpaceGamerTests-Info.plist"; sourceTree = "<group>"; };
 		A7CB07A617FB0BDF00F1B584 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A7CB07A817FB0BDF00F1B584 /* SpaceGamerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SpaceGamerTests.m; sourceTree = "<group>"; };
-		A7F4D23417FE2D95000564F8 /* GameOverScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameOverScene.h; path = ../GameOverScene.h; sourceTree = "<group>"; };
-		A7F4D23517FE2D95000564F8 /* GameOverScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GameOverScene.m; path = ../GameOverScene.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +142,7 @@
 		A723D17A180637AC0042E4A3 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				A724D0C71811406D00647544 /* Fonts */,
 				A723D17E180637F50042E4A3 /* Atlas */,
 				A723D17D180637DA0042E4A3 /* Sounds */,
 				A723D17C180637CD0042E4A3 /* Images */,
@@ -133,6 +155,7 @@
 			isa = PBXGroup;
 			children = (
 				A723D17F180638410042E4A3 /* fuel.sks */,
+				A713BE2E180B8DC70062A2B1 /* fuel2.sks */,
 				A74B848E1804470800217036 /* lazer.sks */,
 				A77581161803ACE400E34415 /* explosion.sks */,
 				A723D1741806302D0042E4A3 /* stars.sks */,
@@ -167,6 +190,24 @@
 				A775811418039EC200E34415 /* EXPLOSION.atlas */,
 			);
 			name = Atlas;
+			sourceTree = "<group>";
+		};
+		A724D0C71811406D00647544 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				A724D0C81811408900647544 /* LICENSE.txt */,
+				A724D0C91811408900647544 /* OpenSans-Bold.ttf */,
+				A724D0CA1811408900647544 /* OpenSans-BoldItalic.ttf */,
+				A724D0CB1811408900647544 /* OpenSans-ExtraBold.ttf */,
+				A724D0CC1811408900647544 /* OpenSans-ExtraBoldItalic.ttf */,
+				A724D0CD1811408900647544 /* OpenSans-Italic.ttf */,
+				A724D0CE1811408900647544 /* OpenSans-Light.ttf */,
+				A724D0CF1811408900647544 /* OpenSans-LightItalic.ttf */,
+				A724D0D01811408900647544 /* OpenSans-Regular.ttf */,
+				A724D0D11811408900647544 /* OpenSans-Semibold.ttf */,
+				A724D0D21811408900647544 /* OpenSans-SemiboldItalic.ttf */,
+			);
+			name = Fonts;
 			sourceTree = "<group>";
 		};
 		A7CB076A17FB0BDF00F1B584 = {
@@ -208,8 +249,6 @@
 				A7CB078717FB0BDF00F1B584 /* AppDelegate.h */,
 				A7CB078A17FB0BDF00F1B584 /* Main.storyboard */,
 				A7CB078817FB0BDF00F1B584 /* AppDelegate.m */,
-				A7F4D23417FE2D95000564F8 /* GameOverScene.h */,
-				A7F4D23517FE2D95000564F8 /* GameOverScene.m */,
 				936CA6E0180AFB0A006A3820 /* GameOverViewController.h */,
 				936CA6E1180AFB0A006A3820 /* GameOverViewController.m */,
 				A7CB078D17FB0BDF00F1B584 /* GameViewController.h */,
@@ -335,21 +374,33 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A724D0D31811408900647544 /* LICENSE.txt in Resources */,
+				A724D0D81811408900647544 /* OpenSans-Italic.ttf in Resources */,
+				A724D0D71811408900647544 /* OpenSans-ExtraBoldItalic.ttf in Resources */,
 				A74B84841804441F00217036 /* explosion2.sks in Resources */,
 				A723D1771806302D0042E4A3 /* spark.png in Resources */,
 				A74B848F1804470800217036 /* lazer.sks in Resources */,
 				A77581131803925F00E34415 /* lazer.wav in Resources */,
 				A7CB078317FB0BDF00F1B584 /* InfoPlist.strings in Resources */,
 				A723D180180638410042E4A3 /* fuel.sks in Resources */,
+				A713BE2F180B8DC70062A2B1 /* fuel2.sks in Resources */,
+				A724D0D51811408900647544 /* OpenSans-BoldItalic.ttf in Resources */,
 				A74B84871804448400217036 /* lazer.png in Resources */,
 				A77581101803574100E34415 /* lazer.mp3 in Resources */,
 				A775811518039EC200E34415 /* EXPLOSION.atlas in Resources */,
+				A724D0DA1811408900647544 /* OpenSans-LightItalic.ttf in Resources */,
 				A77581181803ACE400E34415 /* explosion.sks in Resources */,
+				A724D0DC1811408900647544 /* OpenSans-Semibold.ttf in Resources */,
+				A724D0D91811408900647544 /* OpenSans-Light.ttf in Resources */,
 				A7CB079617FB0BDF00F1B584 /* Images.xcassets in Resources */,
+				A724D0DD1811408900647544 /* OpenSans-SemiboldItalic.ttf in Resources */,
 				A7148A0E1808A35E00EAC7B7 /* point.sks in Resources */,
+				A724D0D41811408900647544 /* OpenSans-Bold.ttf in Resources */,
+				A724D0DB1811408900647544 /* OpenSans-Regular.ttf in Resources */,
 				A7CB078C17FB0BDF00F1B584 /* Main.storyboard in Resources */,
 				A723D1761806302D0042E4A3 /* stars.sks in Resources */,
 				A723D179180635F50042E4A3 /* stars2.sks in Resources */,
+				A724D0D61811408900647544 /* OpenSans-ExtraBold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -369,7 +420,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				936CA6E2180AFB0A006A3820 /* GameOverViewController.m in Sources */,
-				A7F4D23617FE2D95000564F8 /* GameOverScene.m in Sources */,
 				A7CB079217FB0BDF00F1B584 /* GameScene.m in Sources */,
 				A7CB078F17FB0BDF00F1B584 /* GameViewController.m in Sources */,
 				A7CB078917FB0BDF00F1B584 /* AppDelegate.m in Sources */,

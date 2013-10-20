@@ -43,6 +43,10 @@
     [super viewWillAppear:animated];
     
     gameView.paused = NO;
+    
+    [scene removeAllActions];
+    [scene removeAllChildren];
+    
     [scene reset];
 }
 
