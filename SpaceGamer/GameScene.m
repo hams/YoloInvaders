@@ -48,7 +48,7 @@ const uint32_t good_lazers  =  0x1 << 3;
     if (_livesValue > 1) {
         
         // Removes Life for getting hit
-        self.livesValue -= 1;
+        self.livesValue -= 20;
         
         // Removes Points for getting hit
         self.scoreValue -= 25;
@@ -249,12 +249,12 @@ const uint32_t good_lazers  =  0x1 << 3;
     [self addChild:healthBar];
     
     SKShapeNode * healthBarValue = [SKShapeNode node];
-    CGMutablePathRef paththree = CGPathCreateMutable();
-    CGPathAddRect(paththree, NULL, CGRectMake(CGRectGetMaxX(self.frame) - 30, 20, 20, _livesValue));
-    healthBarValue.path = paththree;
+    _paththree = CGPathCreateMutable();
+    CGPathAddRect(_paththree, NULL, CGRectMake(CGRectGetMaxX(self.frame) - 30, 20, 20, _livesValue * 2));
+    healthBarValue.path = _paththree;
     [healthBarValue setFillColor:[UIColor colorWithRed:0.24 green:0.69 blue:0.80 alpha:1.0]];
     [healthBarValue setStrokeColor:[UIColor colorWithRed:0.16 green:0.21 blue:0.32 alpha:0.0]];
-    CGPathRelease(paththree);
+    CGPathRelease(_paththree);
     [self addChild:healthBarValue];
     
     SKShapeNode * healthBarOverlay = [SKShapeNode node];
@@ -500,7 +500,7 @@ const uint32_t good_lazers  =  0x1 << 3;
     _point.zPosition = 6;
     [self addChild:_point];
     
-//    [health runAction:[SKAction sequence:@[actionMove, actionMoveDone]]];
+    //[_health runAction:[SKAction sequence:@[actionMove, actionMoveDone]]];
 
 }
 
@@ -566,6 +566,9 @@ const uint32_t good_lazers  =  0x1 << 3;
 }
 
 -(void)didEvaluateActions {
+    //CGPathAddRect(_paththree, NULL, CGRectMake(CGRectGetMaxX(self.frame) - 30, 20, 20, _livesValue * 2));
+    //[_healthBarValue setPath:(_paththree)];
+    
     // Each Frame
     // -> update: -> SKScene Evaluate Actions -> didEvaluateActions -> SKScene Simulate Physics -> didSimulatePhysics -> Renders
     
