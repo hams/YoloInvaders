@@ -41,7 +41,15 @@ const uint32_t good_lazers  =  0x1 << 3;
     SKAction *fadeoutAction = [SKAction fadeOutWithDuration:0.5];
     SKAction *fadeinAction = [SKAction fadeInWithDuration:0.3];
     SKAction *remove = [SKAction removeFromParent];
-    [_pointsText runAction:[SKAction repeatAction:[SKAction sequence:[NSArray arrayWithObjects:fadeinAction, fadeoutAction, remove, nil]] count:1]];
+    [_pointsText runAction:[SKAction repeatAction:
+                            [SKAction sequence:
+                             [NSArray arrayWithObjects:
+                                            fadeinAction,
+                                            fadeoutAction,
+                                            remove,
+                                            nil]]
+                                            count:1]
+                            ];
 }
 
 -(void)livesUpdate{
@@ -349,7 +357,6 @@ const uint32_t good_lazers  =  0x1 << 3;
     self.player.physicsBody.dynamic = YES;
     self.player.physicsBody.categoryBitMask = good_guys;
     self.player.physicsBody.contactTestBitMask = bad_guys | power_ups | bad_lazers;
-    //self.player.physicsBody.collisionBitMask = bad_guys;
     self.player.physicsBody.collisionBitMask = 0;
     self.player.physicsBody.usesPreciseCollisionDetection = YES;
     
